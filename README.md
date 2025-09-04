@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+npm uninstall tailwindcss
+npm install -D tailwindcss@3 postcss autoprefixer
+npx tailwindcss init -p
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+npx create react-app client 
+npm i react-router-dom
 
-In the project directory, you can run:
+index.css
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
-### `npm start`
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+npm init 
+npm i express mongoose dotenv 
+npm i nodemon 
 
-### `npm test`
+npm i axios redux react-redux
+npm i @reduxjs/toolkit
+npm i antd 
+- antd (Ant Design) for tabs and notifications for admin role
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Tools:
+Google Fonts 
+Lottie Files 
+taiwind css
+Remix Icons
+Json Formatter
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+⚡ Extra Installations Needed for Your Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Since you want:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Admin login/dashboard → JWT + bcrypt for auth.
 
-### `npm run eject`
+Loader animation → framer-motion or lottie-react.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Scroll-to-top button → Pure React, no lib needed.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Here’s the updated install list:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+🔹 Backend
+npm i express mongoose dotenv cors bcryptjs jsonwebtoken nodemailer
+npm i helmet morgan           # optional security/logging
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+🔹 Frontend
+npm i react-router-dom axios framer-motion lottie-react react-icons
 
-## Learn More
+🔹 Dev Tools
+npm install -D tailwindcss@3 postcss autoprefixer
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+npm i framer-motion react-icons classnames
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+npm install @headlessui/react react-type-animation

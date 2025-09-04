@@ -1,13 +1,70 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme Variables */
+:root {
+  --bg: #F8FAFF;
+  --surface: #FFFFFF;
+  --text: #0F172A;
+  --muted: #6B7280;
+  --accent: #2563EB;
+}
+:root.dark, .dark {
+  --bg: #071029;
+  --surface: #071A2B;
+  --text: #E6EEF6;
+  --muted: #94A3B8;
+  --accent: #60A5FA;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html, body, #root {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
 }
+
+.container-max {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.card-surface {
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(2,6,23,0.06);
+  border-radius: 12px;
+}
+
+* {
+  transition: background-color 350ms, color 250ms, border-color 250ms, box-shadow 300ms;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(37,99,235,0.18); border-radius: 10px; }
+
+/* Animations */
+@keyframes spin { to { transform: rotate(360deg); } }
+.loader { border: 4px solid rgba(37,99,235,0.14); border-top-color: var(--accent); border-radius: 50%; width: 48px; height: 48px; animation: spin 1s linear infinite; }
+
+.hero-glow::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  z-index: -1;
+  filter: blur(28px);
+  opacity: 0.5;
+  background: linear-gradient(90deg, rgba(37,99,235,0.12), rgba(14,165,164,0.08));
+  border-radius: 16px;
+}
+
+.float-y { animation: floatY 4s ease-in-out infinite; }
+@keyframes floatY { 0% { transform: translateY(0); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
+
+.fade-in-up { opacity: 0; transform: translateY(10px); animation: fadeInUp 500ms forwards; }
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
