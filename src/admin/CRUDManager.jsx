@@ -6,13 +6,14 @@ import Modal from "./Modal";
 // ✅ Use API base from environment
 const API_BASE = process.env.REACT_APP_API_BASE;
 
-export default function CrudManager({ endpoint, readOnly, single, headers, FormComponent }) {
+export default function CrudManager({ endpoint, readOnly, single, FormComponent }) {
   const [items, setItems] = useState([]);
   const [editing, setEditing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState({ text: "", type: "" });
   const timeoutRef = useRef(null);
 
+  // Cleanup timeout on unmount
   useEffect(() => () => clearTimeout(timeoutRef.current), []);
 
   const showMessage = (text, type = "success", duration = 3000) => {
@@ -21,47 +22,53 @@ export default function CrudManager({ endpoint, readOnly, single, headers, FormC
     timeoutRef.current = setTimeout(() => setMessage({ text: "", type: "" }), duration);
   };
 
+  // Fetch data from backend
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(`${API_BASE}${endpoint}`, { headers });
+      const { data } = await axios.get(`${API_BASE}${endpoint}`);
       const itemsData = single ? [data || {}] : data || [];
       setItems(itemsData);
-    } catch {
+    } catch (err) {
+      console.error("CrudManager fetch error:", err.response || err);
       setItems([]);
       showMessage("Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
-  }, [endpoint, headers, single]);
+  }, [endpoint, single]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
+  // Save (create/update) item
   const handleSave = async (formData) => {
     try {
       if (single) {
-        await axios.put(`${API_BASE}${endpoint}`, formData, { headers });
+        await axios.put(`${API_BASE}${endpoint}`, formData);
       } else if (editing?._id) {
-        await axios.put(`${API_BASE}${endpoint}/${editing._id}`, formData, { headers });
+        await axios.put(`${API_BASE}${endpoint}/${editing._id}`, formData);
       } else {
-        await axios.post(`${API_BASE}${endpoint}`, formData, { headers });
+        await axios.post(`${API_BASE}${endpoint}`, formData);
       }
 
       setEditing(null);
       fetchData();
       showMessage("Saved successfully!", "success");
-    } catch {
+    } catch (err) {
+      console.error("CrudManager save error:", err.response || err);
       showMessage("Failed to save data", "error");
     }
   };
 
+  // Delete item
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this?")) return;
     try {
-      await axios.delete(`${API_BASE}${endpoint}/${id}`, { headers });
+      await axios.delete(`${API_BASE}${endpoint}/${id}`);
       fetchData();
       showMessage("Deleted successfully!", "success");
-    } catch {
+    } catch (err) {
+      console.error("CrudManager delete error:", err.response || err);
       showMessage("Failed to delete data", "error");
     }
   };
@@ -76,7 +83,7 @@ export default function CrudManager({ endpoint, readOnly, single, headers, FormC
         </div>
       )}
 
-      {!single && (
+      {!single && !readOnly && (
         <button
           onClick={() => setEditing({})}
           className="mb-4 px-6 py-2 rounded-xl font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition shadow"
@@ -85,7 +92,6 @@ export default function CrudManager({ endpoint, readOnly, single, headers, FormC
         </button>
       )}
 
-      {/* Dashboard cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((item) => (
           <div 
@@ -93,7 +99,7 @@ export default function CrudManager({ endpoint, readOnly, single, headers, FormC
             className="p-5 bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col justify-between max-h-96 overflow-hidden"
           >
             <DashboardCard item={item} />
-            {!readOnly && (
+            {!readOnly && !single && (
               <div className="flex justify-end gap-3 mt-4">
                 <button 
                   onClick={() => setEditing(item)} 
@@ -113,7 +119,6 @@ export default function CrudManager({ endpoint, readOnly, single, headers, FormC
         ))}
       </div>
 
-      {/* Modal for add/edit */}
       {editing && FormComponent && (
         <Modal isOpen={!!editing} onClose={() => setEditing(null)}>
           <div className="flex flex-col flex-1">
@@ -125,7 +130,7 @@ export default function CrudManager({ endpoint, readOnly, single, headers, FormC
   );
 }
 
-// Dashboard card with scrollable content and truncation
+// Dashboard card component
 function DashboardCard({ item }) {
   return (
     <div className="space-y-3 overflow-hidden flex-1">

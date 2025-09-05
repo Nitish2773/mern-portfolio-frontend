@@ -3,7 +3,7 @@ import axios from "axios";
 
 const AuthContext = createContext();
 
-// ✅ Use your environment variable
+// Backend URL from environment variable
 const API_BASE = process.env.REACT_APP_API_BASE;
 
 export const AuthProvider = ({ children }) => {
@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [loadingAuth, setLoadingAuth] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  // Attach JWT token to Axios default headers
   const attachToken = (token) => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -19,34 +20,46 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Check for existing token on mount
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    if (token) {
+    const checkAdmin = async () => {
+      const token = localStorage.getItem("adminToken");
+      if (!token) return setLoadingAuth(false);
+
       attachToken(token);
-      axios
-        .get(`${API_BASE}/api/admin/me`)   // ✅ updated
-        .then((res) => setAdmin({ token })) // backend just sends {ok:true}
-        .catch(() => {
-          localStorage.removeItem("adminToken");
-          setAdmin(null);
-        })
-        .finally(() => setLoadingAuth(false));
-    } else {
-      setLoadingAuth(false);
-    }
+
+      try {
+        const res = await axios.get(`${API_BASE}/api/admin/me`);
+        // Backend may just return { ok: true }, combine with token
+        setAdmin({ token, ...res.data });
+      } catch (err) {
+        localStorage.removeItem("adminToken");
+        setAdmin(null);
+      } finally {
+        setLoadingAuth(false);
+      }
+    };
+
+    checkAdmin();
   }, []);
 
+  // Login function
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const res = await axios.post(`${API_BASE}/api/admin/login`, {  // ✅ updated
+      const res = await axios.post(`${API_BASE}/api/admin/login`, {
         email,
         password,
       });
+
       const { token, admin } = res.data;
+
+      if (!token) throw new Error("No token returned from server");
+
       localStorage.setItem("adminToken", token);
       attachToken(token);
-      setAdmin(admin);
+      // Store admin info (name/email) and token
+      setAdmin(admin ? { token, ...admin } : { token });
       return admin;
     } catch (err) {
       throw new Error(err.response?.data?.message || "Login failed");
@@ -55,6 +68,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Logout function
   const logout = () => {
     localStorage.removeItem("adminToken");
     attachToken(null);
@@ -70,4 +84,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// Custom hook to use AuthContext
 export const useAuth = () => useContext(AuthContext);
