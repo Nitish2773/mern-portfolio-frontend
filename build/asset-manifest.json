@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.b74ddc69.css",
-    "main.js": "/static/js/main.2a03976b.js",
+    "main.js": "/static/js/main.fc3936de.js",
     "static/js/264.1da193cd.chunk.js": "/static/js/264.1da193cd.chunk.js",
     "static/js/6.8aee2737.chunk.js": "/static/js/6.8aee2737.chunk.js",
     "static/js/283.e355e548.chunk.js": "/static/js/283.e355e548.chunk.js",
@@ -11,14 +11,14 @@
     "static/js/64.082c7c69.chunk.js": "/static/js/64.082c7c69.chunk.js",
     "static/js/938.7a4ca5e3.chunk.js": "/static/js/938.7a4ca5e3.chunk.js",
     "static/js/44.9ef600d0.chunk.js": "/static/js/44.9ef600d0.chunk.js",
-    "static/js/29.9f743fee.chunk.js": "/static/js/29.9f743fee.chunk.js",
+    "static/js/29.3b59491e.chunk.js": "/static/js/29.3b59491e.chunk.js",
     "static/js/855.99d43a81.chunk.js": "/static/js/855.99d43a81.chunk.js",
     "static/js/764.19b1ffda.chunk.js": "/static/js/764.19b1ffda.chunk.js",
     "static/media/data-engineer.jpg": "/static/media/data-engineer.30e220075d902fc2d9bf.jpg",
     "static/media/undraw_message-sent_785q.png": "/static/media/undraw_message-sent_785q.4f3e0990e87d6d54599a.png",
     "index.html": "/index.html",
     "main.b74ddc69.css.map": "/static/css/main.b74ddc69.css.map",
-    "main.2a03976b.js.map": "/static/js/main.2a03976b.js.map",
+    "main.fc3936de.js.map": "/static/js/main.fc3936de.js.map",
     "264.1da193cd.chunk.js.map": "/static/js/264.1da193cd.chunk.js.map",
     "6.8aee2737.chunk.js.map": "/static/js/6.8aee2737.chunk.js.map",
     "283.e355e548.chunk.js.map": "/static/js/283.e355e548.chunk.js.map",
@@ -28,12 +28,12 @@
     "64.082c7c69.chunk.js.map": "/static/js/64.082c7c69.chunk.js.map",
     "938.7a4ca5e3.chunk.js.map": "/static/js/938.7a4ca5e3.chunk.js.map",
     "44.9ef600d0.chunk.js.map": "/static/js/44.9ef600d0.chunk.js.map",
-    "29.9f743fee.chunk.js.map": "/static/js/29.9f743fee.chunk.js.map",
+    "29.3b59491e.chunk.js.map": "/static/js/29.3b59491e.chunk.js.map",
     "855.99d43a81.chunk.js.map": "/static/js/855.99d43a81.chunk.js.map",
     "764.19b1ffda.chunk.js.map": "/static/js/764.19b1ffda.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b74ddc69.css",
-    "static/js/main.2a03976b.js"
+    "static/js/main.fc3936de.js"
   ]
 }
