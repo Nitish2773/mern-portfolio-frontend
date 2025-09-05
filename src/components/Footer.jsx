@@ -3,8 +3,8 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-gray-400 py-6 w-full fixed bottom-0 left-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0">
+    <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-gray-400 w-full fixed bottom-0 left-0 z-40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
         {/* Branding */}
         <div className="text-white font-bold text-lg text-center md:text-left">
           Sri Nitish
@@ -20,9 +20,6 @@ export default function Footer() {
           Designed & Developed ❤️ using MERN
         </div>
       </div>
-
-      {/* Optional: small top border for separation */}
-      <div className="mt-2 border-t border-gray-700"></div>
     </footer>
   );
 }

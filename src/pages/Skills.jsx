@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 
+// Normalized categories (backend-friendly keys)
 const categories = [
   { key: "all", label: "All" },
-  { key: "Programming", label: "Programming" },
-  { key: "Web Dev", label: "Web Dev" },
-  { key: "Database", label: "Database" },
-  { key: "Frameworks", label: "Frameworks" },
-  { key: "Libraries", label: "Libraries" },
-  { key: "Tools", label: "Tools" },
-  { key: "Others", label: "Others" },
+  { key: "programming", label: "Programming" },
+  { key: "webdev", label: "Web Dev" },
+  { key: "database", label: "Database" },
+  { key: "frameworks", label: "Frameworks" },
+  { key: "libraries", label: "Libraries" },
+  { key: "tools", label: "Tools" },
+  { key: "others", label: "Others" },
 ];
 
 // ----------------------
@@ -39,27 +40,27 @@ export default function Skills() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  const fetchSkills = async () => {
-    try {
-      setLoading(true);
-      let url = `${process.env.REACT_APP_API_BASE}/api/skills?sortBy=${sortBy}&order=desc`;
-      if (activeCategory !== "all") url += `&category=${encodeURIComponent(activeCategory)}`; // encode here
-      const res = await axios.get(url);
-      setSkills(res.data || []);
-    } catch (err) {
-      console.error("Error fetching skills:", err);
-      setSkills([]); // ensure skills is empty array on error
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchSkills();
-}, [activeCategory, sortBy]);
+    const fetchSkills = async () => {
+      try {
+        setLoading(true);
+        let url = `${process.env.REACT_APP_API_BASE}/api/skills?sortBy=${sortBy}&order=desc`;
+        if (activeCategory !== "all") url += `&category=${activeCategory}`;
+        const res = await axios.get(url);
+        setSkills(res.data || []);
+      } catch (err) {
+        console.error("Error fetching skills:", err);
+        setSkills([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSkills();
+  }, [activeCategory, sortBy]);
 
   return (
     <section className="py-16 sm:py-20 bg-gray-50 dark:bg-gray-900 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-10">
-        {/* Skills Heading */}
+        {/* Heading */}
         <motion.h2
           className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white text-center"
           initial={{ opacity: 0, y: -20 }}
@@ -70,12 +71,12 @@ export default function Skills() {
         </motion.h2>
 
         {/* Category Tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-6">
+        <div className="flex overflow-x-auto gap-3 mb-6 px-1 w-full sm:justify-center scrollbar-hide">
           {categories.map((cat) => (
             <button
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
-              className={`px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 ${
+              className={`flex-shrink-0 px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 ${
                 activeCategory === cat.key
                   ? "bg-indigo-600 text-white shadow-md scale-105"
                   : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-indigo-600"
