@@ -3,6 +3,9 @@ import axios from "axios";
 
 const AuthContext = createContext();
 
+// ✅ Use your environment variable
+const API_BASE = process.env.REACT_APP_API_BASE;
+
 export const AuthProvider = ({ children }) => {
   const [admin, setAdmin] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
@@ -20,8 +23,9 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("adminToken");
     if (token) {
       attachToken(token);
-      axios.get("/api/admin/me")
-        .then(res => setAdmin({ token })) // backend /me just sends {ok:true}
+      axios
+        .get(`${API_BASE}/api/admin/me`)   // ✅ updated
+        .then((res) => setAdmin({ token })) // backend just sends {ok:true}
         .catch(() => {
           localStorage.removeItem("adminToken");
           setAdmin(null);
@@ -35,7 +39,10 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const res = await axios.post("/api/admin/login", { email, password });
+      const res = await axios.post(`${API_BASE}/api/admin/login`, {  // ✅ updated
+        email,
+        password,
+      });
       const { token, admin } = res.data;
       localStorage.setItem("adminToken", token);
       attachToken(token);
@@ -55,7 +62,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ admin, login, logout, loadingAuth, loading, setLoading }}>
+    <AuthContext.Provider
+      value={{ admin, login, logout, loadingAuth, loading, setLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );

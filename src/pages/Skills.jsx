@@ -21,7 +21,7 @@ export default function Skills() {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        let url = `/api/skills?sortBy=${sortBy}&order=desc`;
+        let url = `${process.env.REACT_APP_API_BASE}/api/skills?sortBy=${sortBy}&order=desc`;
         if (activeCategory !== "all") url += `&category=${activeCategory}`;
         const res = await axios.get(url);
         setSkills(res.data || []);
@@ -35,7 +35,6 @@ export default function Skills() {
   return (
     <section className="py-16 sm:py-20 bg-gray-50 dark:bg-gray-900 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-10">
-
         {/* Skills Heading */}
         <motion.h2
           className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white text-center"

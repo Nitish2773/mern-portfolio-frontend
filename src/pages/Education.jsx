@@ -6,23 +6,25 @@ import { FaGraduationCap, FaCalendarAlt } from "react-icons/fa";
 export default function Education() {
   const [education, setEducation] = useState([]);
   const [loading, setLoading] = useState(true);
+useEffect(() => {
+  const fetchEducation = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_BASE}/api/education`
+      );
+      setEducation(
+        res.data.sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
+      );
+    } catch (err) {
+      console.error("Error fetching education:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchEducation();
+}, []);
 
-  useEffect(() => {
-    const fetchEducation = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get("/api/education");
-        setEducation(
-          res.data.sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
-        );
-      } catch (err) {
-        console.error("Error fetching education:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchEducation();
-  }, []);
 
   if (loading)
     return (

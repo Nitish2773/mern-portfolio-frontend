@@ -12,7 +12,8 @@ import ExperienceForm from "./ExperienceForm";
 import CertificationForm from "./CertificationForm";
 import ProfileForm from "./ProfileForm";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
+
 
 const sections = [
   { key: "projects", label: "Projects", endpoint: `${API_BASE}/api/projects`, FormComponent: ProjectForm },

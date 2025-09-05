@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { FaGithub, FaExternalLinkAlt, FaFileAlt, FaSearch } from "react-icons/fa";
+import {
+  FaGithub,
+  FaExternalLinkAlt,
+  FaFileAlt,
+  FaSearch,
+} from "react-icons/fa";
 
 // Expanded category list
 const categoryOptions = [
@@ -33,7 +38,9 @@ export default function Projects() {
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("/api/projects");
+        const res = await axios.get(
+          ` ${process.env.REACT_APP_API_BASE}/api/projects`
+        );
         setProjects(res.data);
       } catch (err) {
         console.error("Error fetching projects:", err);
@@ -81,13 +88,18 @@ export default function Projects() {
 
   // 🔹 Sorting by date only
   filteredProjects.sort((a, b) => {
-    if (sortBy === "startDate") return new Date(b.startDate || 0) - new Date(a.startDate || 0);
-    if (sortBy === "endDate") return new Date(b.endDate || 0) - new Date(a.endDate || 0);
+    if (sortBy === "startDate")
+      return new Date(b.startDate || 0) - new Date(a.startDate || 0);
+    if (sortBy === "endDate")
+      return new Date(b.endDate || 0) - new Date(a.endDate || 0);
     return 0;
   });
 
   return (
-    <section id="projects" className="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
+    <section
+      id="projects"
+      className="py-12 md:py-20 bg-gray-50 dark:bg-gray-900"
+    >
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-900 dark:text-white">
           Projects
@@ -180,7 +192,9 @@ export default function Projects() {
                     ))}
                 </div>
               )}
-              {(project.liveUrl || project.githubUrl || project.caseStudyUrl) && (
+              {(project.liveUrl ||
+                project.githubUrl ||
+                project.caseStudyUrl) && (
                 <div className="mt-auto flex flex-wrap gap-4 text-indigo-600 dark:text-indigo-400 font-medium">
                   {project.liveUrl && (
                     <a

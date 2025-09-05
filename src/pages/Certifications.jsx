@@ -25,28 +25,31 @@ export default function Certification() {
     "Other",
   ];
 
-  useEffect(() => {
-    const fetchCerts = async () => {
-      try {
-        setLoading(true);
-        setError("");
-        const res = await axios.get("/api/certifications");
-        const sorted = res.data.sort(
-          (a, b) =>
-            (b.priority ?? 0) - (a.priority ?? 0) ||
-            new Date(b.issueDate) - new Date(a.issueDate)
-        );
-        setCerts(sorted);
-        setFilteredCerts(sorted);
-      } catch (err) {
-        console.error("Error fetching certifications:", err);
-        setError("Failed to load certifications. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCerts();
-  }, []);
+useEffect(() => {
+  const fetchCerts = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_BASE}/api/certifications`
+      );
+      const sorted = res.data.sort(
+        (a, b) =>
+          (b.priority ?? 0) - (a.priority ?? 0) ||
+          new Date(b.issueDate) - new Date(a.issueDate)
+      );
+      setCerts(sorted);
+      setFilteredCerts(sorted);
+    } catch (err) {
+      console.error("Error fetching certifications:", err);
+      setError("Failed to load certifications. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchCerts();
+}, []);
+
 
   useEffect(() => {
     if (selectedCategory === "All") {

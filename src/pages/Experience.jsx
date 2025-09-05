@@ -7,28 +7,31 @@ export default function Experience() {
   const [experiences, setExperiences] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchExperiences = async () => {
-      try {
-        const res = await axios.get("/api/experience");
+ useEffect(() => {
+  const fetchExperiences = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_BASE}/api/experience`
+      );
 
-        setExperiences(
-          res.data.sort((a, b) => {
-            if (!a.endDate && b.endDate) return -1;
-            if (a.endDate && !b.endDate) return 1;
-            if (!a.endDate && !b.endDate)
-              return new Date(b.startDate) - new Date(a.startDate);
-            return new Date(b.endDate) - new Date(a.endDate);
-          })
-        );
-      } catch (err) {
-        console.error("Error fetching experiences:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchExperiences();
-  }, []);
+      setExperiences(
+        res.data.sort((a, b) => {
+          if (!a.endDate && b.endDate) return -1;
+          if (a.endDate && !b.endDate) return 1;
+          if (!a.endDate && !b.endDate)
+            return new Date(b.startDate) - new Date(a.startDate);
+          return new Date(b.endDate) - new Date(a.endDate);
+        })
+      );
+    } catch (err) {
+      console.error("Error fetching experiences:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchExperiences();
+}, []);
+
 
   if (loading)
     return (

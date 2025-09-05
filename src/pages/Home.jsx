@@ -19,19 +19,22 @@ export default function Home() {
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const { data } = await axios.get("/api/profile");
-        setProfile(data);
-      } catch (err) {
-        console.error("Error fetching profile:", err);
-      } finally {
-        setProfileLoading(false);
-      }
-    };
-    fetchProfile();
-  }, []);
+useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_BASE}/api/profile`
+      );
+      setProfile(data);
+    } catch (err) {
+      console.error("Error fetching profile:", err);
+    } finally {
+      setProfileLoading(false);
+    }
+  };
+  fetchProfile();
+}, []);
+
 
   const hero = profile?.hero || {};
 

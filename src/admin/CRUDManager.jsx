@@ -3,6 +3,9 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
 import Modal from "./Modal";
 
+// ✅ Use API base from environment
+const API_BASE = process.env.REACT_APP_API_BASE;
+
 export default function CrudManager({ endpoint, readOnly, single, headers, FormComponent }) {
   const [items, setItems] = useState([]);
   const [editing, setEditing] = useState(null);
@@ -21,7 +24,7 @@ export default function CrudManager({ endpoint, readOnly, single, headers, FormC
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(endpoint, { headers });
+      const { data } = await axios.get(`${API_BASE}${endpoint}`, { headers });
       const itemsData = single ? [data || {}] : data || [];
       setItems(itemsData);
     } catch {
@@ -36,9 +39,13 @@ export default function CrudManager({ endpoint, readOnly, single, headers, FormC
 
   const handleSave = async (formData) => {
     try {
-      if (single) await axios.put(endpoint, formData, { headers });
-      else if (editing?._id) await axios.put(`${endpoint}/${editing._id}`, formData, { headers });
-      else await axios.post(endpoint, formData, { headers });
+      if (single) {
+        await axios.put(`${API_BASE}${endpoint}`, formData, { headers });
+      } else if (editing?._id) {
+        await axios.put(`${API_BASE}${endpoint}/${editing._id}`, formData, { headers });
+      } else {
+        await axios.post(`${API_BASE}${endpoint}`, formData, { headers });
+      }
 
       setEditing(null);
       fetchData();
@@ -50,12 +57,12 @@ export default function CrudManager({ endpoint, readOnly, single, headers, FormC
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this?")) return;
-    try { 
-      await axios.delete(`${endpoint}/${id}`, { headers }); 
-      fetchData(); 
-      showMessage("Deleted successfully!", "success"); 
-    } catch { 
-      showMessage("Failed to delete data", "error"); 
+    try {
+      await axios.delete(`${API_BASE}${endpoint}/${id}`, { headers });
+      fetchData();
+      showMessage("Deleted successfully!", "success");
+    } catch {
+      showMessage("Failed to delete data", "error");
     }
   };
 
@@ -86,20 +93,22 @@ export default function CrudManager({ endpoint, readOnly, single, headers, FormC
             className="p-5 bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col justify-between max-h-96 overflow-hidden"
           >
             <DashboardCard item={item} />
-            <div className="flex justify-end gap-3 mt-4">
-              <button 
-                onClick={() => setEditing(item)} 
-                className="px-4 py-1 rounded-lg bg-yellow-400 text-white hover:bg-yellow-500 transition shadow"
-              >
-                Edit
-              </button>
-              <button 
-                onClick={() => handleDelete(item._id)} 
-                className="px-4 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow"
-              >
-                Delete
-              </button>
-            </div>
+            {!readOnly && (
+              <div className="flex justify-end gap-3 mt-4">
+                <button 
+                  onClick={() => setEditing(item)} 
+                  className="px-4 py-1 rounded-lg bg-yellow-400 text-white hover:bg-yellow-500 transition shadow"
+                >
+                  Edit
+                </button>
+                <button 
+                  onClick={() => handleDelete(item._id)} 
+                  className="px-4 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow"
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>

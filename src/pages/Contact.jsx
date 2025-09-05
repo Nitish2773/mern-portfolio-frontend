@@ -10,23 +10,26 @@ export default function Contact() {
   const [status, setStatus] = useState(null);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setStatus(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setStatus(null);
+  try {
+    await axios.post(
+      `${process.env.REACT_APP_API_BASE}/api/messages`,
+      form
+    );
+    setStatus("success");
+    setForm({ name: "", email: "", subject: "", message: "" });
+  } catch (err) {
+    console.error("Message submission failed:", err);
+    setStatus("error");
+  } finally {
+    setLoading(false);
+  }
+};
 
-    try {
-      await axios.post("/api/messages", form);
-      setStatus("success");
-      setForm({ name: "", email: "", subject: "", message: "" });
-    } catch (err) {
-      console.error("Message submission failed:", err);
-      setStatus("error");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Animation variants
   const rightPanelVariants = {

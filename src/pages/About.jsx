@@ -20,11 +20,12 @@ import DataEngineerImg from "../assets/data-engineer.jpg";
 export default function About() {
   const [profile, setProfile] = useState(null);
   const [expanded, setExpanded] = useState(false); // 🔹 for Read More toggle
-
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const { data } = await axios.get("/api/profile");
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API_BASE}/api/profile` // ✅ fixed
+        );
         setProfile(data);
       } catch (err) {
         console.error("Error fetching profile:", err);
