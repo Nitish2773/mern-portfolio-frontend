@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.97bdae71.css",
-    "main.js": "/static/js/main.6b09a353.js",
+    "main.js": "/static/js/main.fe8dc95d.js",
     "static/media/data-engineer.jpg": "/static/media/data-engineer.30e220075d902fc2d9bf.jpg",
     "static/media/undraw_message-sent_785q.png": "/static/media/undraw_message-sent_785q.4f3e0990e87d6d54599a.png",
     "index.html": "/index.html",
     "main.97bdae71.css.map": "/static/css/main.97bdae71.css.map",
-    "main.6b09a353.js.map": "/static/js/main.6b09a353.js.map"
+    "main.fe8dc95d.js.map": "/static/js/main.fe8dc95d.js.map"
   },
   "entrypoints": [
     "static/css/main.97bdae71.css",
-    "static/js/main.6b09a353.js"
+    "static/js/main.fe8dc95d.js"
   ]
 }
