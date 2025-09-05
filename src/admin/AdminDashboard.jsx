@@ -1,3 +1,4 @@
+// AdminDashboard.jsx
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../Context/AuthContext";
 import { useLoading } from "../Context/LoadingContext";
@@ -13,6 +14,7 @@ import ProfileForm from "./ProfileForm";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
+
 const sections = [
   { key: "projects", label: "Projects", endpoint: `${API_BASE}/api/projects`, FormComponent: ProjectForm },
   { key: "skills", label: "Skills", endpoint: `${API_BASE}/api/skills`, FormComponent: SkillForm },
@@ -23,22 +25,15 @@ const sections = [
 ];
 
 export default function AdminDashboard() {
-  const { admin, logout, loadingAuth } = useAuth();
+  const { admin, logout, token } = useAuth();
   const { setLoading } = useLoading();
   const [selected, setSelected] = useState(0);
 
-  // Show loader briefly when switching tabs
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(timer);
   }, [selected, setLoading]);
-
-  if (loadingAuth) return <div>Loading admin data...</div>; // wait for auth check
-  if (!admin) return <div>Unauthorized. Please log in.</div>; // not logged in
-
-  // Extract token from admin object
-  const token = admin.token;
 
   const authenticatedSections = sections.map((s) => ({
     ...s,
@@ -52,7 +47,7 @@ export default function AdminDashboard() {
       <header className="bg-gradient-to-r from-indigo-500 via-sriBlue-500 to-teal-500 text-white p-6 flex justify-between items-center shadow-lg">
         <h1 className="text-3xl font-extrabold tracking-tight">Admin Dashboard</h1>
         <div className="flex items-center gap-4">
-          <span className="font-semibold">{admin.name || "Admin"}</span>
+          <span className="font-semibold">{admin?.name || "Admin"}</span>
           <button
             onClick={logout}
             className="bg-red-500 px-5 py-2 rounded-xl shadow-md hover:bg-red-600 hover:scale-105 transition-transform"
