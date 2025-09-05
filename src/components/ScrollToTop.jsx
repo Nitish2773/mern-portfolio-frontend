@@ -22,9 +22,8 @@ export default function ScrollToTop() {
 
   if (config && !config?.ui?.showScrollToTop) return null;
 
-  // Adjust bottom spacing and size based on screen size
   const isMobile = windowWidth < 768;
-  const bottomOffset = isMobile ? "bottom-28" : "bottom-24"; // Push above mobile shutter/footer
+  const bottomOffset = isMobile ? "bottom-36" : "bottom-24"; // Push mobile button higher
   const sizeClass = isMobile ? "w-10 h-10 md:w-14 md:h-14" : "w-14 h-14";
 
   return (
@@ -43,7 +42,9 @@ export default function ScrollToTop() {
         ${visible ? `${bottomOffset} opacity-100` : '-bottom-20 opacity-0'}
       `}
     >
-      <FaArrowUp className={`text-xl ${isMobile ? 'md:text-2xl' : 'md:text-2xl'} animate-bounce`} />
+      <FaArrowUp
+        className={`text-xl ${isMobile ? "text-lg" : "md:text-2xl"} animate-bounce`}
+      />
     </button>
   );
 }

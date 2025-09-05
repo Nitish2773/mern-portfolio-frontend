@@ -7,7 +7,7 @@ import {
   FaEnvelope,
   FaFacebookF,
   FaTelegramPlane,
-  FaPlus, // new shutter button icon
+  FaPlus, // shutter button
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -71,7 +71,7 @@ export default function Sidebar() {
       </aside>
 
       {/* Mobile shutter-style sidebar */}
-      <aside className="flex md:hidden fixed bottom-16 left-4 z-50 flex-col items-center gap-2">
+      <aside className="flex md:hidden fixed bottom-24 left-4 z-50 flex-col items-center gap-2">
         {/* Floating shutter button with idle nudge */}
         <motion.button
           onClick={() => setIsOpen(!isOpen)}

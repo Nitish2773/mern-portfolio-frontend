@@ -39,21 +39,22 @@ export default function Skills() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        setLoading(true);
-        let url = `${process.env.REACT_APP_API_BASE}/api/skills?sortBy=${sortBy}&order=desc`;
-        if (activeCategory !== "all") url += `&category=${activeCategory}`;
-        const res = await axios.get(url);
-        setSkills(res.data || []);
-      } catch (err) {
-        console.error("Error fetching skills:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSkills();
-  }, [activeCategory, sortBy]);
+  const fetchSkills = async () => {
+    try {
+      setLoading(true);
+      let url = `${process.env.REACT_APP_API_BASE}/api/skills?sortBy=${sortBy}&order=desc`;
+      if (activeCategory !== "all") url += `&category=${encodeURIComponent(activeCategory)}`; // encode here
+      const res = await axios.get(url);
+      setSkills(res.data || []);
+    } catch (err) {
+      console.error("Error fetching skills:", err);
+      setSkills([]); // ensure skills is empty array on error
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchSkills();
+}, [activeCategory, sortBy]);
 
   return (
     <section className="py-16 sm:py-20 bg-gray-50 dark:bg-gray-900 overflow-hidden">

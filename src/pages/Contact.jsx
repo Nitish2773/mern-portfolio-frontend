@@ -1,8 +1,9 @@
+// frontend/src/components/Contact.jsx
 import { useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
-import ContactImg from '../assets/undraw_message-sent_785q.png'
+import ContactImg from "../assets/undraw_message-sent_785q.png";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
@@ -10,26 +11,23 @@ export default function Contact() {
   const [status, setStatus] = useState(null);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setStatus(null);
 
-  try {
-    await axios.post(
-      `${process.env.REACT_APP_API_BASE}/api/messages`,
-      form
-    );
-    setStatus("success");
-    setForm({ name: "", email: "", subject: "", message: "" });
-  } catch (err) {
-    console.error("Message submission failed:", err);
-    setStatus("error");
-  } finally {
-    setLoading(false);
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setStatus(null);
 
+    try {
+      await axios.post(`${process.env.REACT_APP_API_BASE}/api/messages`, form);
+      setStatus("success");
+      setForm({ name: "", email: "", subject: "", message: "" });
+    } catch (err) {
+      console.error("Message submission failed:", err);
+      setStatus("error");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Animation variants
   const rightPanelVariants = {
@@ -43,9 +41,9 @@ const handleSubmit = async (e) => {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-16">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       {/* Banner */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 px-2">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
           Let's Talk
         </h1>
@@ -55,13 +53,13 @@ const handleSubmit = async (e) => {
       </div>
 
       {/* Form + Info Panel */}
-      <div className="flex flex-col lg:flex-row gap-10">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
         {/* Left: Contact Form */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white dark:bg-gray-800 shadow-xl rounded-3xl p-8 flex-1 space-y-5"
+          className="bg-white dark:bg-gray-800 shadow-xl rounded-3xl p-6 sm:p-8 flex-1 space-y-5"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {["name", "email"].map((field) => (
               <motion.div
                 key={field}
@@ -69,7 +67,9 @@ const handleSubmit = async (e) => {
                 whileFocus="focused"
                 variants={inputVariants}
               >
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">{field}</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">
+                  {field}
+                </label>
                 <input
                   type={field === "email" ? "email" : "text"}
                   name={field}
@@ -84,7 +84,9 @@ const handleSubmit = async (e) => {
 
           {/* Subject */}
           <motion.div initial="unfocused" whileFocus="focused" variants={inputVariants}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Subject</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Subject
+            </label>
             <input
               type="text"
               name="subject"
@@ -96,7 +98,9 @@ const handleSubmit = async (e) => {
 
           {/* Message */}
           <motion.div initial="unfocused" whileFocus="focused" variants={inputVariants}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Message
+            </label>
             <textarea
               name="message"
               value={form.message}
@@ -116,7 +120,9 @@ const handleSubmit = async (e) => {
           </button>
 
           {status === "success" && (
-            <p className="text-green-600 dark:text-green-400 text-center mt-3">Message sent successfully ✅</p>
+            <p className="text-green-600 dark:text-green-400 text-center mt-3">
+              Message sent successfully ✅
+            </p>
           )}
           {status === "error" && (
             <p className="text-red-600 dark:text-red-400 text-center mt-3">
@@ -127,7 +133,7 @@ const handleSubmit = async (e) => {
 
         {/* Right: Info / Illustration Panel */}
         <motion.div
-          className="flex-1 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-800 dark:to-gray-700 rounded-3xl p-8 flex flex-col justify-center items-start space-y-6"
+          className="flex-1 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-800 dark:to-gray-700 rounded-3xl p-6 sm:p-8 flex flex-col justify-start space-y-6"
           initial="hidden"
           animate="visible"
           variants={rightPanelVariants}
@@ -137,7 +143,7 @@ const handleSubmit = async (e) => {
             Feel free to reach out through any of the methods below:
           </p>
 
-          <div className="space-y-4 text-gray-800 dark:text-gray-200">
+          <div className="space-y-3 text-gray-800 dark:text-gray-200">
             <div className="flex items-center gap-3">
               <FaPhoneAlt className="text-blue-500" /> <span>+91 8008615514</span>
             </div>
@@ -145,11 +151,11 @@ const handleSubmit = async (e) => {
               <FaEnvelope className="text-blue-500" /> <span>nitishkamisetti123@gmail.com</span>
             </div>
             <div className="flex items-center gap-3">
-              <FaMapMarkerAlt className="text-blue-500" /> <span>Kakinada, Andhra Pradhesh, India</span>
+              <FaMapMarkerAlt className="text-blue-500" /> <span>Kakinada, Andhra Pradesh, India</span>
             </div>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-6 flex justify-center lg:justify-start">
             <img
               src={ContactImg}
               alt="Contact illustration"
