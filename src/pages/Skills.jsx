@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 
-// Normalized categories (backend-friendly keys)
+// Frontend tabs: label for UI, key for API (lowercase, no spaces)
 const categories = [
   { key: "all", label: "All" },
   { key: "programming", label: "Programming" },
@@ -14,9 +14,7 @@ const categories = [
   { key: "others", label: "Others" },
 ];
 
-// ----------------------
-// Skeleton Loader
-// ----------------------
+// Skeleton loader
 function SkillsSkeleton({ count = 12 }) {
   return (
     <div className="mt-4 flex flex-wrap justify-center gap-5 sm:gap-6">
@@ -30,9 +28,7 @@ function SkillsSkeleton({ count = 12 }) {
   );
 }
 
-// ----------------------
-// Main Component
-// ----------------------
+// Main Skills component
 export default function Skills() {
   const [skills, setSkills] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
@@ -43,8 +39,13 @@ export default function Skills() {
     const fetchSkills = async () => {
       try {
         setLoading(true);
+
+        // Build URL
         let url = `${process.env.REACT_APP_API_BASE}/api/skills?sortBy=${sortBy}&order=desc`;
-        if (activeCategory !== "all") url += `&category=${activeCategory}`;
+        if (activeCategory !== "all") {
+          url += `&category=${encodeURIComponent(activeCategory)}`;
+        }
+
         const res = await axios.get(url);
         setSkills(res.data || []);
       } catch (err) {
@@ -54,6 +55,7 @@ export default function Skills() {
         setLoading(false);
       }
     };
+
     fetchSkills();
   }, [activeCategory, sortBy]);
 
@@ -71,12 +73,12 @@ export default function Skills() {
         </motion.h2>
 
         {/* Category Tabs */}
-        <div className="flex overflow-x-auto gap-3 mb-6 px-1 w-full sm:justify-center scrollbar-hide">
+        <div className="flex flex-wrap justify-center gap-3 mb-6">
           {categories.map((cat) => (
             <button
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
-              className={`flex-shrink-0 px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 ${
+              className={`px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 ${
                 activeCategory === cat.key
                   ? "bg-indigo-600 text-white shadow-md scale-105"
                   : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-indigo-600"

@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { SKILL_CATEGORIES } from "./SkillConstants";
 
+// Optional: mapping keys to user-friendly labels
+const CATEGORY_LABELS = {
+  programming: "Programming",
+  webdev: "Web Dev",
+  database: "Database",
+  frameworks: "Frameworks",
+  libraries: "Libraries",
+  tools: "Tools",
+  others: "Others",
+};
+
 export default function SkillForm({ data, onSave, onCancel, readOnly }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -64,7 +75,7 @@ export default function SkillForm({ data, onSave, onCancel, readOnly }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Name */}
+      {/* Skill Name */}
       <div>
         <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
           Skill Name <span className="text-red-500">*</span>
@@ -96,7 +107,7 @@ export default function SkillForm({ data, onSave, onCancel, readOnly }) {
           <option value="">Select Category</option>
           {SKILL_CATEGORIES.map((cat) => (
             <option key={cat} value={cat}>
-              {cat}
+              {CATEGORY_LABELS[cat]}
             </option>
           ))}
         </select>
