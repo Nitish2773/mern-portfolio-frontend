@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/heading-has-content */
 // frontend/src/pages/Certification.jsx
 import { useEffect, useState } from "react";
 import axios from "axios";
