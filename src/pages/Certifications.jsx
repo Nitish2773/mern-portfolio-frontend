@@ -1,8 +1,37 @@
+// frontend/src/pages/Certification.jsx
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { FaCalendarAlt, FaArrowRight } from "react-icons/fa";
 
+// ----------------------
+// Skeleton Loader
+// ----------------------
+function CertificationSkeleton({ count = 6 }) {
+  return (
+    <section className="py-12 bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white animate-pulse bg-gray-300 h-8 w-48 mx-auto rounded"/>
+        <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: count }).map((_, idx) => (
+            <div
+              key={idx}
+              className="relative rounded-xl shadow-xl overflow-hidden group bg-white dark:bg-gray-800 flex flex-col animate-pulse"
+              style={{ height: "300px" }}
+            >
+              <div className="flex-1 w-full bg-gray-300 dark:bg-gray-700"></div>
+              <div className="h-10 bg-gray-300 dark:bg-gray-700 m-4 rounded"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ----------------------
+// Main Component
+// ----------------------
 export default function Certification() {
   const [certs, setCerts] = useState([]);
   const [filteredCerts, setFilteredCerts] = useState([]);
@@ -25,31 +54,30 @@ export default function Certification() {
     "Other",
   ];
 
-useEffect(() => {
-  const fetchCerts = async () => {
-    try {
-      setLoading(true);
-      setError("");
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_BASE}/api/certifications`
-      );
-      const sorted = res.data.sort(
-        (a, b) =>
-          (b.priority ?? 0) - (a.priority ?? 0) ||
-          new Date(b.issueDate) - new Date(a.issueDate)
-      );
-      setCerts(sorted);
-      setFilteredCerts(sorted);
-    } catch (err) {
-      console.error("Error fetching certifications:", err);
-      setError("Failed to load certifications. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchCerts();
-}, []);
-
+  useEffect(() => {
+    const fetchCerts = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_BASE}/api/certifications`
+        );
+        const sorted = res.data.sort(
+          (a, b) =>
+            (b.priority ?? 0) - (a.priority ?? 0) ||
+            new Date(b.issueDate) - new Date(a.issueDate)
+        );
+        setCerts(sorted);
+        setFilteredCerts(sorted);
+      } catch (err) {
+        console.error("Error fetching certifications:", err);
+        setError("Failed to load certifications. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCerts();
+  }, []);
 
   useEffect(() => {
     if (selectedCategory === "All") {
@@ -60,12 +88,7 @@ useEffect(() => {
     setShowAll(false);
   }, [selectedCategory, certs]);
 
-  if (loading)
-    return (
-      <p className="text-center py-10 text-gray-500 dark:text-gray-400">
-        Loading certifications...
-      </p>
-    );
+  if (loading) return <CertificationSkeleton />;
 
   if (error)
     return (
@@ -121,14 +144,14 @@ useEffect(() => {
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="relative rounded-xl shadow-xl overflow-hidden group bg-white dark:bg-gray-800 flex flex-col"
               >
-                {/* Certificate Image Container */}
+                {/* Certificate Image */}
                 <div className="relative w-full flex-1 overflow-hidden">
                   <img
                     src={cert.image}
                     alt={cert.title}
                     className="w-full h-full object-contain"
+                    loading="lazy"
                   />
-
                   {/* Hover Overlay */}
                   <div className="absolute inset-0 flex items-center justify-center transition duration-300 group-hover:bg-black/30">
                     <div className="opacity-0 group-hover:opacity-100 transition duration-300 bg-white/40 dark:bg-gray-900/40 backdrop-blur-sm px-4 py-3 rounded text-center max-w-[90%]">
@@ -151,7 +174,7 @@ useEffect(() => {
                   </div>
                 </div>
 
-                {/* Stylish Verify Button */}
+                {/* Verify Button */}
                 {cert.verifyUrl && (
                   <div className="flex justify-center p-4">
                     <a

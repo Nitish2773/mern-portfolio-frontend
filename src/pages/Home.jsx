@@ -1,40 +1,63 @@
-import React, { useEffect, useState } from "react";
-import { motion} from "framer-motion";
+// frontend/src/pages/Home.jsx
+import React, { useEffect, useState, Suspense, lazy } from "react";
+import { motion } from "framer-motion";
 import axios from "axios";
-
-// Sections
-import About from "./About";
-import Projects from "./Projects";
-import Skills from "./Skills";
-import Education from "./Education";
-import Experience from "./Experience";
-import Certifications from "./Certifications";
-import Contact from "./Contact";
-
-// Global loader
 import { useLoading } from "../Context/LoadingContext";
 
+// Lazy-loaded sections
+const About = lazy(() => import("./About"));
+const Projects = lazy(() => import("./Projects"));
+const Skills = lazy(() => import("./Skills"));
+const Education = lazy(() => import("./Education"));
+const Experience = lazy(() => import("./Experience"));
+const Certifications = lazy(() => import("./Certifications"));
+const Contact = lazy(() => import("./Contact"));
+
+// ----------------------
+// Profile Skeleton
+// ----------------------
+function ProfileSkeleton() {
+  return (
+    <section className="relative flex flex-col md:flex-row items-center justify-between gap-8 px-6 md:px-12 py-12 md:py-16">
+      <div className="flex-1 space-y-4">
+        <div className="h-8 w-3/4 bg-gray-300 rounded animate-pulse"></div>
+        <div className="h-6 w-full bg-gray-300 rounded animate-pulse"></div>
+        <div className="flex gap-4 mt-4">
+          <div className="h-10 w-32 bg-gray-300 rounded animate-pulse"></div>
+          <div className="h-10 w-32 bg-gray-300 rounded animate-pulse"></div>
+        </div>
+      </div>
+      <div className="flex-1 flex justify-center mt-6 md:mt-0">
+        <div className="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gray-300 animate-pulse"></div>
+      </div>
+    </section>
+  );
+}
+
+// ----------------------
+// Main Component
+// ----------------------
 export default function Home() {
   const { loading } = useLoading();
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(true);
 
-useEffect(() => {
-  const fetchProfile = async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API_BASE}/api/profile`
-      );
-      setProfile(data);
-    } catch (err) {
-      console.error("Error fetching profile:", err);
-    } finally {
-      setProfileLoading(false);
-    }
-  };
-  fetchProfile();
-}, []);
-
+  // Fetch profile data
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API_BASE}/api/profile`
+        );
+        setProfile(data);
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const hero = profile?.hero || {};
 
@@ -48,8 +71,8 @@ useEffect(() => {
     },
   };
 
-  // Loading state (global + local profile)
-  if (loading || profileLoading) {
+  // Show global loader or profile skeleton
+  if (loading) {
     return (
       <motion.div
         key="loader"
@@ -61,6 +84,8 @@ useEffect(() => {
       </motion.div>
     );
   }
+
+  if (profileLoading) return <ProfileSkeleton />;
 
   return (
     <div className="flex flex-col relative bg-gradient-to-b from-sriBlue-50 via-white to-sriTeal-50 dark:from-sriBlue-950 dark:via-gray-900 dark:to-sriTeal-900">
@@ -102,7 +127,7 @@ useEffect(() => {
 
         {/* Right - Profile */}
         <div className="flex-1 flex justify-center mt-6 md:mt-0">
-          <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden hero-glow float-y shadow-xl border-4 border-sriBlue-200 dark:border-sriBlue-700">
+          <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full hero-glow float-y shadow-xl border-4 border-sriBlue-200 dark:border-sriBlue-700 overflow-hidden">
             <img
               src={hero.profileImage || "/assets/profile.jpg"}
               alt={hero.name || "Profile"}
@@ -115,27 +140,29 @@ useEffect(() => {
       </motion.section>
 
       {/* Other Sections */}
-      {[
-        { id: "about", component: <About /> },
-        { id: "projects", component: <Projects /> },
-        { id: "skills", component: <Skills /> },
-        { id: "education", component: <Education /> },
-        { id: "experience", component: <Experience /> },
-        { id: "certifications", component: <Certifications /> },
-        { id: "contact", component: <Contact /> },
-      ].map((section) => (
-        <motion.section
-          key={section.id}
-          id={section.id}
-          variants={itemVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="px-6 md:px-12 py-8 md:py-12"
-        >
-          {section.component}
-        </motion.section>
-      ))}
+      <Suspense fallback={<ProfileSkeleton />}>
+        {[
+          { id: "about", component: <About /> },
+          { id: "projects", component: <Projects /> },
+          { id: "skills", component: <Skills /> },
+          { id: "education", component: <Education /> },
+          { id: "experience", component: <Experience /> },
+          { id: "certifications", component: <Certifications /> },
+          { id: "contact", component: <Contact /> },
+        ].map((section) => (
+          <motion.section
+            key={section.id}
+            id={section.id}
+            variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="px-6 md:px-12 py-8 md:py-12"
+          >
+            {section.component}
+          </motion.section>
+        ))}
+      </Suspense>
     </div>
   );
 }

@@ -1,12 +1,8 @@
+// frontend/src/pages/Projects.jsx
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import {
-  FaGithub,
-  FaExternalLinkAlt,
-  FaFileAlt,
-  FaSearch,
-} from "react-icons/fa";
+import { FaGithub, FaExternalLinkAlt, FaFileAlt, FaSearch } from "react-icons/fa";
 
 // Expanded category list
 const categoryOptions = [
@@ -24,13 +20,32 @@ const categoryOptions = [
   "IT Support Projects",
 ];
 
+// ----------------------
+// Skeleton Loader
+// ----------------------
+function ProjectsSkeleton({ count = 6 }) {
+  return (
+    <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: count }).map((_, idx) => (
+        <div
+          key={idx}
+          className="relative flex flex-col p-6 rounded-3xl shadow-xl bg-gray-200 dark:bg-gray-800 animate-pulse"
+          style={{ height: "400px" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// ----------------------
+// Main Component
+// ----------------------
 export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [visibleCount, setVisibleCount] = useState(6);
   const [loading, setLoading] = useState(true);
 
-  // Filter + Search + Sort
-  const [sortBy, setSortBy] = useState("startDate"); // default sorting
+  const [sortBy, setSortBy] = useState("startDate");
   const [filterCategory, setFilterCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -39,7 +54,7 @@ export default function Projects() {
       try {
         setLoading(true);
         const res = await axios.get(
-          ` ${process.env.REACT_APP_API_BASE}/api/projects`
+          `${process.env.REACT_APP_API_BASE}/api/projects`
         );
         setProjects(res.data);
       } catch (err) {
@@ -53,21 +68,14 @@ export default function Projects() {
 
   const loadMore = () => setVisibleCount((prev) => prev + 6);
 
-  if (loading) {
-    return (
-      <p className="text-center py-10 text-gray-500 dark:text-gray-400">
-        Loading projects...
-      </p>
-    );
-  }
+  if (loading) return <ProjectsSkeleton />;
 
-  if (!projects.length) {
+  if (!projects.length)
     return (
       <p className="text-center py-10 text-gray-500 dark:text-gray-400">
         🚧 No projects available yet.
       </p>
     );
-  }
 
   // 🔹 Filtering
   let filteredProjects =
@@ -86,7 +94,7 @@ export default function Projects() {
     );
   }
 
-  // 🔹 Sorting by date only
+  // 🔹 Sorting
   filteredProjects.sort((a, b) => {
     if (sortBy === "startDate")
       return new Date(b.startDate || 0) - new Date(a.startDate || 0);
@@ -107,7 +115,6 @@ export default function Projects() {
 
         {/* Controls */}
         <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
-          {/* Filter */}
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
@@ -120,7 +127,6 @@ export default function Projects() {
             ))}
           </select>
 
-          {/* Sort */}
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
@@ -130,7 +136,6 @@ export default function Projects() {
             <option value="endDate">Sort by End Date</option>
           </select>
 
-          {/* Search */}
           <div className="relative w-full sm:w-auto">
             <input
               type="text"

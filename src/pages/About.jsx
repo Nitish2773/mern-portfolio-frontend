@@ -14,17 +14,45 @@ import {
   FaFacebook,
 } from "react-icons/fa";
 
-// Import your animated/static image
+// Import your image
 import DataEngineerImg from "../assets/data-engineer.jpg";
 
+// ----------------------
+// Skeleton Loader
+// ----------------------
+function AboutSkeleton() {
+  return (
+    <section className="flex flex-col md:flex-row items-start md:items-stretch gap-12 py-12 md:py-20">
+      {/* Left column */}
+      <div className="flex-1 p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 space-y-4 animate-pulse">
+        <div className="h-8 w-1/3 bg-gray-400 rounded"></div>
+        <div className="h-4 w-full bg-gray-300 rounded"></div>
+        <div className="h-4 w-5/6 bg-gray-300 rounded"></div>
+        <div className="h-6 w-1/4 bg-gray-400 rounded mt-4"></div>
+      </div>
+      {/* Right column */}
+      <div className="flex-1 flex flex-col items-center gap-6 animate-pulse">
+        <div className="w-64 h-64 md:w-72 md:h-72 rounded-3xl bg-gray-300"></div>
+        <div className="h-6 w-1/3 bg-gray-400 rounded"></div>
+        <div className="h-4 w-1/2 bg-gray-300 rounded"></div>
+        <div className="h-4 w-2/3 bg-gray-300 rounded"></div>
+      </div>
+    </section>
+  );
+}
+
+// ----------------------
+// Main Component
+// ----------------------
 export default function About() {
   const [profile, setProfile] = useState(null);
-  const [expanded, setExpanded] = useState(false); // 🔹 for Read More toggle
+  const [expanded, setExpanded] = useState(false);
+
   useEffect(() => {
     async function fetchProfile() {
       try {
         const { data } = await axios.get(
-          `${process.env.REACT_APP_API_BASE}/api/profile` // ✅ fixed
+          `${process.env.REACT_APP_API_BASE}/api/profile`
         );
         setProfile(data);
       } catch (err) {
@@ -34,10 +62,11 @@ export default function About() {
     fetchProfile();
   }, []);
 
-  if (!profile) return null;
+  // Show skeleton while loading
+  if (!profile) return <AboutSkeleton />;
 
   const { about, social, hero } = profile;
-  const shortBio = about.bio?.slice(0, 250); // show only first 250 chars initially
+  const shortBio = about.bio?.slice(0, 250);
 
   return (
     <motion.section
@@ -57,7 +86,7 @@ export default function About() {
           {about.headline || "About Me"}
         </h2>
 
-        {/* 🔹 Collapsible Bio */}
+        {/* Collapsible Bio */}
         <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6 max-w-2xl">
           {expanded ? about.bio : `${shortBio}...`}
           {about.bio?.length > 250 && (
@@ -110,7 +139,7 @@ export default function About() {
         </div>
       </motion.div>
 
-      {/* Right Column (unchanged) */}
+      {/* Right Column */}
       <motion.div
         initial={{ opacity: 0, x: 40 }}
         animate={{ opacity: 1, x: 0 }}
@@ -126,6 +155,7 @@ export default function About() {
             src={DataEngineerImg}
             alt="Data Engineer"
             className="w-full h-full object-cover"
+            loading="lazy" // ✅ lazy load image
           />
         </motion.div>
 
@@ -135,9 +165,7 @@ export default function About() {
         <p className="text-gray-600 dark:text-gray-300 font-medium text-lg md:text-xl">
           {hero?.caption || "Full-Stack Developer | Data Engineer"}
         </p>
-        <p className="text-gray-500 dark:text-gray-400 max-w-md">
-          {hero?.description}
-        </p>
+        <p className="text-gray-500 dark:text-gray-400 max-w-md">{hero?.description}</p>
 
         <div className="flex flex-wrap justify-center gap-5 text-gray-500 dark:text-gray-400 text-2xl mt-6">
           {social.github && (

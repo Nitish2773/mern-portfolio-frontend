@@ -12,21 +12,43 @@ const categories = [
   { key: "others", label: "Others" },
 ];
 
+// ----------------------
+// Skeleton Loader
+// ----------------------
+function SkillsSkeleton({ count = 12 }) {
+  return (
+    <div className="mt-4 flex flex-wrap justify-center gap-5 sm:gap-6">
+      {Array.from({ length: count }).map((_, idx) => (
+        <div
+          key={idx}
+          className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse"
+        />
+      ))}
+    </div>
+  );
+}
+
+// ----------------------
+// Main Component
+// ----------------------
 export default function Skills() {
   const [skills, setSkills] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
-  // eslint-disable-next-line no-unused-vars
-  const [sortBy, setSortBy] = useState("priority");
+  const [sortBy] = useState("priority");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSkills = async () => {
       try {
+        setLoading(true);
         let url = `${process.env.REACT_APP_API_BASE}/api/skills?sortBy=${sortBy}&order=desc`;
         if (activeCategory !== "all") url += `&category=${activeCategory}`;
         const res = await axios.get(url);
         setSkills(res.data || []);
       } catch (err) {
         console.error("Error fetching skills:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchSkills();
@@ -63,35 +85,45 @@ export default function Skills() {
         </div>
 
         {/* Skill Badges */}
-        <div className="mt-4 flex flex-wrap justify-center gap-5 sm:gap-6">
-          {skills.map((skill, idx) => (
-            <motion.div
-              key={skill._id}
-              className="flex items-center justify-center p-4 rounded-full cursor-pointer
-                bg-gradient-to-tr from-gray-200 via-gray-300 to-gray-200
-                dark:from-gray-700 dark:via-gray-800 dark:to-gray-700
-                shadow-sm dark:shadow-md"
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: idx * 0.05, type: "spring", stiffness: 200 }}
-              whileHover={{
-                scale: 1.15,
-                boxShadow:
-                  "0 6px 15px rgba(99,102,241,0.2), 0 6px 25px rgba(139,92,246,0.25)",
-              }}
-            >
-              {skill.logo && (
-                <motion.img
-                  src={skill.logo}
-                  alt={skill.name}
-                  className="w-12 h-12 sm:w-14 sm:h-14"
-                  whileHover={{ scale: 1.2 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                />
-              )}
-            </motion.div>
-          ))}
-        </div>
+        {loading ? (
+          <SkillsSkeleton />
+        ) : skills.length === 0 ? (
+          <p className="text-gray-500 dark:text-gray-400 text-center py-10">
+            🚧 No skills available yet.
+          </p>
+        ) : (
+          <div className="mt-4 flex flex-wrap justify-center gap-5 sm:gap-6">
+            {skills.map((skill, idx) => (
+              <motion.div
+                key={skill._id}
+                className="flex items-center justify-center p-4 rounded-full cursor-pointer
+                  bg-gradient-to-tr from-gray-200 via-gray-300 to-gray-200
+                  dark:from-gray-700 dark:via-gray-800 dark:to-gray-700
+                  shadow-sm dark:shadow-md"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: idx * 0.05, type: "spring", stiffness: 200 }}
+                whileHover={{
+                  scale: 1.15,
+                  boxShadow:
+                    "0 6px 15px rgba(99,102,241,0.2), 0 6px 25px rgba(139,92,246,0.25)",
+                }}
+              >
+                {skill.logo && (
+                  <motion.img
+                    src={skill.logo}
+                    alt={skill.name}
+                    className="w-12 h-12 sm:w-14 sm:h-14"
+                    whileHover={{ scale: 1.2 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
