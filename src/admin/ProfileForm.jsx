@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-export default function ProfileForm({ data, onSave, onCancel }) {
-  const [form, setForm] = useState({
+export default function ProfileForm({ data = {}, onSave, onCancel }) {
+  // Default structure
+  const defaultForm = {
     hero: { name: "", caption: "", description: "", profileImage: "" },
     about: {
       headline: "",
@@ -20,33 +21,23 @@ export default function ProfileForm({ data, onSave, onCancel }) {
       facebook: "",
       gmail: "",
     },
-    ...data,
-  });
+  };
 
+  // Deep merge function
+  const mergeData = (defaults, incoming) => {
+    return {
+      hero: { ...defaults.hero, ...(incoming.hero || {}) },
+      about: { ...defaults.about, ...(incoming.about || {}) },
+      social: { ...defaults.social, ...(incoming.social || {}) },
+    };
+  };
+
+  const [form, setForm] = useState(mergeData(defaultForm, data));
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    setForm({
-      hero: { name: "", caption: "", description: "", profileImage: "" },
-      about: {
-        headline: "",
-        bio: "",
-        location: "",
-        email: "",
-        phone: "",
-        resumeUrl: "",
-        availability: "Open to opportunities",
-      },
-      social: {
-        github: "",
-        linkedin: "",
-        twitter: "",
-        telegram: "",
-        facebook: "",
-        gmail: "",
-      },
-      ...data,
-    });
+    setForm(mergeData(defaultForm, data));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const handleChange = (e, section = null) => {
@@ -68,19 +59,22 @@ export default function ProfileForm({ data, onSave, onCancel }) {
   };
 
   const getDirectImageUrl = (url) => {
-    const match = url.match(/\/d\/(.*?)\//);
+    if (!url) return "";
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)\//);
     if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
     return url;
   };
 
-  // Reusable Input Component
+  // Reusable Input component
   const InputField = ({ label, section, name, required = false, type = "text" }) => (
     <div className="flex flex-col">
-      <label className="font-medium">{label}{required && " *"}</label>
+      <label className="font-medium">
+        {label} {required && "*"}
+      </label>
       <input
         type={type}
         name={name}
-        value={form[section][name]}
+        value={form[section]?.[name] || ""}
         onChange={(e) => handleChange(e, section)}
         required={required}
         className="border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-sriBlue-300"
@@ -90,10 +84,12 @@ export default function ProfileForm({ data, onSave, onCancel }) {
 
   const TextAreaField = ({ label, section, name, rows = 3, required = false }) => (
     <div className="flex flex-col">
-      <label className="font-medium">{label}{required && " *"}</label>
+      <label className="font-medium">
+        {label} {required && "*"}
+      </label>
       <textarea
         name={name}
-        value={form[section][name]}
+        value={form[section]?.[name] || ""}
         onChange={(e) => handleChange(e, section)}
         rows={rows}
         required={required}
@@ -122,7 +118,7 @@ export default function ProfileForm({ data, onSave, onCancel }) {
       <InputField label="Profile Image URL" section="hero" name="profileImage" required />
 
       {/* Live Image Preview */}
-      {form.hero.profileImage && (
+      {form.hero?.profileImage && (
         <div className="col-span-1 md:col-span-2 flex justify-center mt-2">
           <img
             src={getDirectImageUrl(form.hero.profileImage)}

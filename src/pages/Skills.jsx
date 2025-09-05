@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 
 const categories = [
   { key: "all", label: "All" },
-  { key: "web-dev", label: "Web Dev" },
-  { key: "database", label: "Database" },
-  { key: "frameworks", label: "Frameworks" },
-  { key: "libraries", label: "Libraries" },
-  { key: "tools", label: "Tools" },
-  { key: "others", label: "Others" },
+  { key: "Programming", label: "Programming" },
+  { key: "Web Dev", label: "Web Dev" },
+  { key: "Database", label: "Database" },
+  { key: "Frameworks", label: "Frameworks" },
+  { key: "Libraries", label: "Libraries" },
+  { key: "Tools", label: "Tools" },
+  { key: "Others", label: "Others" },
 ];
 
 // ----------------------
@@ -102,7 +103,11 @@ export default function Skills() {
                   shadow-sm dark:shadow-md"
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: idx * 0.05, type: "spring", stiffness: 200 }}
+                transition={{
+                  delay: idx * 0.05,
+                  type: "spring",
+                  stiffness: 200,
+                }}
                 whileHover={{
                   scale: 1.15,
                   boxShadow:

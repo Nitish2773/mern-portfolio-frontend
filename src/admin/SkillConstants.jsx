@@ -1,2 +1,2 @@
 // SkillConstants.js
-export const SKILL_CATEGORIES = ["web-dev", "database", "frameworks", "libraries","tools","Other" ];
+export const SKILL_CATEGORIES = ["Programming","Web Dev", "Database", "Frameworks", "Libraries","Tools","Others" ];
