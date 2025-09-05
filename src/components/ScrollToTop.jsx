@@ -22,8 +22,10 @@ export default function ScrollToTop() {
 
   if (config && !config?.ui?.showScrollToTop) return null;
 
-  // Adjust bottom spacing based on footer height and screen size
-  const bottomOffset = windowWidth < 768 ? "bottom-16" : "bottom-24"; // 64px for mobile, 96px for desktop
+  // Adjust bottom spacing and size based on screen size
+  const isMobile = windowWidth < 768;
+  const bottomOffset = isMobile ? "bottom-28" : "bottom-24"; // Push above mobile shutter/footer
+  const sizeClass = isMobile ? "w-10 h-10 md:w-14 md:h-14" : "w-14 h-14";
 
   return (
     <button
@@ -31,7 +33,7 @@ export default function ScrollToTop() {
       aria-label="Scroll to top"
       className={`
         fixed right-6 md:right-8 z-50
-        w-12 h-12 md:w-14 md:h-14
+        ${sizeClass}
         bg-gradient-to-tr from-purple-500 via-pink-500 to-orange-400
         rounded-full shadow-xl flex items-center justify-center
         text-white ring-4 ring-purple-300/30 backdrop-blur-sm
@@ -41,7 +43,7 @@ export default function ScrollToTop() {
         ${visible ? `${bottomOffset} opacity-100` : '-bottom-20 opacity-0'}
       `}
     >
-      <FaArrowUp className="text-xl md:text-2xl animate-bounce" />
+      <FaArrowUp className={`text-xl ${isMobile ? 'md:text-2xl' : 'md:text-2xl'} animate-bounce`} />
     </button>
   );
 }
