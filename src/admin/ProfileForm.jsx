@@ -1,56 +1,90 @@
 import React, { useState, useEffect } from "react";
 
 export default function ProfileForm({ data = {}, onSave, onCancel }) {
-  // Default structure
+  // Flattened default form for CRUD compatibility
+  // eslint-disable-next-line no-unused-vars
   const defaultForm = {
-    hero: { name: "", caption: "", description: "", profileImage: "" },
-    about: {
-      headline: "",
-      bio: "",
-      location: "",
-      email: "",
-      phone: "",
-      resumeUrl: "",
-      availability: "Open to opportunities",
-    },
-    social: {
-      github: "",
-      linkedin: "",
-      twitter: "",
-      telegram: "",
-      facebook: "",
-      gmail: "",
-    },
+    hero_name: "",
+    hero_caption: "",
+    hero_description: "",
+    hero_profileImage: "",
+    about_headline: "",
+    about_bio: "",
+    about_location: "",
+    about_email: "",
+    about_phone: "",
+    about_resumeUrl: "",
+    about_availability: "Open to opportunities",
+    social_github: "",
+    social_linkedin: "",
+    social_twitter: "",
+    social_telegram: "",
+    social_facebook: "",
   };
 
-  // Deep merge function
-  const mergeData = (defaults, incoming) => {
-    return {
-      hero: { ...defaults.hero, ...(incoming.hero || {}) },
-      about: { ...defaults.about, ...(incoming.about || {}) },
-      social: { ...defaults.social, ...(incoming.social || {}) },
-    };
-  };
+  // Flatten incoming data for editing
+  const flattenData = (incoming) => ({
+    hero_name: incoming.hero?.name || "",
+    hero_caption: incoming.hero?.caption || "",
+    hero_description: incoming.hero?.description || "",
+    hero_profileImage: incoming.hero?.profileImage || "",
+    about_headline: incoming.about?.headline || "",
+    about_bio: incoming.about?.bio || "",
+    about_location: incoming.about?.location || "",
+    about_email: incoming.about?.email || "",
+    about_phone: incoming.about?.phone || "",
+    about_resumeUrl: incoming.about?.resumeUrl || "",
+    about_availability: incoming.about?.availability || "Open to opportunities",
+    social_github: incoming.social?.github || "",
+    social_linkedin: incoming.social?.linkedin || "",
+    social_twitter: incoming.social?.twitter || "",
+    social_telegram: incoming.social?.telegram || "",
+    social_facebook: incoming.social?.facebook || "",
+  });
 
-  const [form, setForm] = useState(mergeData(defaultForm, data));
+  const [form, setForm] = useState(flattenData(data));
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    setForm(mergeData(defaultForm, data));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setForm(flattenData(data));
   }, [data]);
 
-  const handleChange = (e, section = null) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    if (section)
-      setForm({ ...form, [section]: { ...form[section], [name]: value } });
-    else setForm({ ...form, [name]: value });
+    setForm({ ...form, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Rehydrate nested structure for backend
+    const nestedData = {
+      hero: {
+        name: form.hero_name,
+        caption: form.hero_caption,
+        description: form.hero_description,
+        profileImage: form.hero_profileImage,
+      },
+      about: {
+        headline: form.about_headline,
+        bio: form.about_bio,
+        location: form.about_location,
+        email: form.about_email,
+        phone: form.about_phone,
+        resumeUrl: form.about_resumeUrl,
+        availability: form.about_availability,
+      },
+      social: {
+        github: form.social_github,
+        linkedin: form.social_linkedin,
+        twitter: form.social_twitter,
+        telegram: form.social_telegram,
+        facebook: form.social_facebook,
+      },
+    };
+
     try {
-      await onSave(form);
+      await onSave(nestedData);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
@@ -65,8 +99,8 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
     return url;
   };
 
-  // Reusable Input component
-  const InputField = ({ label, section, name, required = false, type = "text" }) => (
+  // Reusable Input Component
+  const InputField = ({ label, name, required = false, type = "text" }) => (
     <div className="flex flex-col">
       <label className="font-medium">
         {label} {required && "*"}
@@ -74,23 +108,23 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
       <input
         type={type}
         name={name}
-        value={form[section]?.[name] || ""}
-        onChange={(e) => handleChange(e, section)}
+        value={form[name] || ""}
+        onChange={handleChange}
         required={required}
         className="border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-sriBlue-300"
       />
     </div>
   );
 
-  const TextAreaField = ({ label, section, name, rows = 3, required = false }) => (
+  const TextAreaField = ({ label, name, rows = 3, required = false }) => (
     <div className="flex flex-col">
       <label className="font-medium">
         {label} {required && "*"}
       </label>
       <textarea
         name={name}
-        value={form[section]?.[name] || ""}
-        onChange={(e) => handleChange(e, section)}
+        value={form[name] || ""}
+        onChange={handleChange}
         rows={rows}
         required={required}
         className="border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-sriBlue-300"
@@ -111,17 +145,19 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
       )}
 
       {/* Hero Section */}
-      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-2">Hero Section</h3>
-      <InputField label="Name" section="hero" name="name" required />
-      <InputField label="Caption" section="hero" name="caption" required />
-      <TextAreaField label="Description" section="hero" name="description" required />
-      <InputField label="Profile Image URL" section="hero" name="profileImage" required />
+      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-2">
+        Hero Section
+      </h3>
+      <InputField label="Name" name="hero_name" required />
+      <InputField label="Caption" name="hero_caption" required />
+      <TextAreaField label="Description" name="hero_description" required />
+      <InputField label="Profile Image URL" name="hero_profileImage" required />
 
       {/* Live Image Preview */}
-      {form.hero?.profileImage && (
+      {form.hero_profileImage && (
         <div className="col-span-1 md:col-span-2 flex justify-center mt-2">
           <img
-            src={getDirectImageUrl(form.hero.profileImage)}
+            src={getDirectImageUrl(form.hero_profileImage)}
             alt="Profile Preview"
             className="h-32 w-32 object-cover rounded-full border hover:scale-105 transition-transform"
           />
@@ -129,21 +165,31 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
       )}
 
       {/* About Section */}
-      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-6">About Section</h3>
-      <InputField label="Headline" section="about" name="headline" />
-      <TextAreaField label="Bio" section="about" name="bio" required />
-      <InputField label="Location" section="about" name="location" />
-      <InputField label="Email" section="about" name="email" type="email" />
-      <InputField label="Phone" section="about" name="phone" />
-      <InputField label="Resume URL" section="about" name="resumeUrl" />
+      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-6">
+        About Section
+      </h3>
+      <InputField label="Headline" name="about_headline" />
+      <TextAreaField label="Bio" name="about_bio" required />
+      <InputField label="Location" name="about_location" />
+      <InputField label="Email" name="about_email" type="email" />
+      <InputField label="Phone" name="about_phone" />
+      <InputField label="Resume URL" name="about_resumeUrl" />
+      <InputField label="Availability" name="about_availability" />
 
       {/* Social Section */}
-      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-6">Social Links</h3>
-      {Object.keys(form.social).map((key) => (
+      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-6">
+        Social Links
+      </h3>
+      {[
+        "social_github",
+        "social_linkedin",
+        "social_twitter",
+        "social_telegram",
+        "social_facebook",
+      ].map((key) => (
         <InputField
           key={key}
-          label={key.charAt(0).toUpperCase() + key.slice(1)}
-          section="social"
+          label={key.replace("social_", "").charAt(0).toUpperCase() + key.slice(7)}
           name={key}
         />
       ))}

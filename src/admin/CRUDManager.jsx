@@ -144,41 +144,73 @@ export default function CrudManager({
 }
 
 // DashboardCard
+// DashboardCard
 function DashboardCard({ item }) {
+  // Helper to render nested/flat fields
+  const renderValue = (key, value) => {
+    // Special rendering for profile fields
+    if (["hero_profileImage"].includes(key) && value) {
+      return (
+        <img
+          src={value}
+          alt="Profile"
+          className="h-20 w-20 object-cover rounded-full border"
+        />
+      );
+    }
+
+    if (["hero_name", "hero_caption", "hero_description"].includes(key) && value) {
+      return <span className="font-medium">{value}</span>;
+    }
+
+    if (Array.isArray(value)) {
+      return (
+        <div className="flex flex-wrap gap-1 mt-1 max-h-20 overflow-y-auto">
+          {value.map((tag, idx) => (
+            <span
+              key={idx}
+              className="bg-indigo-100 dark:bg-indigo-700 text-indigo-800 dark:text-indigo-200 px-2 py-0.5 rounded-full text-xs truncate"
+              title={tag}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      );
+    }
+
+    if (key.toLowerCase().includes("proficiency")) {
+      return (
+        <div className="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full mt-1">
+          <div
+            className="bg-green-500 h-2 rounded-full"
+            style={{ width: `${value}%` }}
+          ></div>
+        </div>
+      );
+    }
+
+    // Default rendering
+    return (
+      <span
+        className="text-gray-800 dark:text-gray-200 mt-1 truncate break-words max-h-20 overflow-hidden"
+        title={typeof value === "object" ? JSON.stringify(value) : value}
+      >
+        {typeof value === "object" ? JSON.stringify(value) : value}
+      </span>
+    );
+  };
+
   return (
     <div className="space-y-3 overflow-hidden flex-1">
       {Object.entries(item)
         .filter(([key]) => !["_id", "__v", "createdAt", "updatedAt"].includes(key))
         .map(([key, value]) => (
           <div key={key} className="flex flex-col">
-            <span className="text-gray-500 dark:text-gray-400 text-sm truncate">{key}</span>
-            {Array.isArray(value) ? (
-              <div className="flex flex-wrap gap-1 mt-1 max-h-20 overflow-y-auto">
-                {value.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className="bg-indigo-100 dark:bg-indigo-700 text-indigo-800 dark:text-indigo-200 px-2 py-0.5 rounded-full text-xs truncate"
-                    title={tag}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            ) : key.toLowerCase().includes("proficiency") ? (
-              <div className="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full mt-1">
-                <div
-                  className="bg-green-500 h-2 rounded-full"
-                  style={{ width: `${value}%` }}
-                ></div>
-              </div>
-            ) : (
-              <span
-                className="text-gray-800 dark:text-gray-200 mt-1 truncate break-words max-h-20 overflow-hidden"
-                title={typeof value === "object" ? JSON.stringify(value) : value}
-              >
-                {typeof value === "object" ? JSON.stringify(value) : value}
-              </span>
-            )}
+            <span className="text-gray-500 dark:text-gray-400 text-sm truncate">
+              {key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+            </span>
+            {renderValue(key, value)}
           </div>
         ))}
     </div>
