@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 import Loader from "./components/Loader";
+import LoaderWrapper from "./components/LoaderWrapper";
 import ScrollToTop from "./components/ScrollToTop";
 import MainLayout from "./layouts/MainLayout";
 import { ThemeProvider } from "./Context/ThemeContext";
@@ -33,22 +34,78 @@ export default function App() {
         <LoadingProvider>
           <ScrollToTop />
 
-          {/* AnimatePresence + Suspense ensures global loader only for route load */}
+          {/* Global Suspense for lazy-loading */}
           <Suspense fallback={<Loader />}>
             <AnimatePresence>
               <Routes>
                 <Route path="/" element={<MainLayout />}>
-                  {/* Home handles its own skeleton */}
-                  <Route index element={<Home />} />
+                  {/* Home with LoaderWrapper */}
+                  <Route
+                    index
+                    element={
+                      <LoaderWrapper>
+                        <Home />
+                      </LoaderWrapper>
+                    }
+                  />
 
                   {/* Other pages */}
-                  <Route path="about" element={<About />} />
-                  <Route path="projects" element={<Projects />} />
-                  <Route path="skills" element={<Skills />} />
-                  <Route path="experience" element={<Experience />} />
-                  <Route path="education" element={<Education />} />
-                  <Route path="certifications" element={<Certifications />} />
-                  <Route path="contact" element={<Contact />} />
+                  <Route
+                    path="about"
+                    element={
+                      <LoaderWrapper>
+                        <About />
+                      </LoaderWrapper>
+                    }
+                  />
+                  <Route
+                    path="projects"
+                    element={
+                      <LoaderWrapper>
+                        <Projects />
+                      </LoaderWrapper>
+                    }
+                  />
+                  <Route
+                    path="skills"
+                    element={
+                      <LoaderWrapper>
+                        <Skills />
+                      </LoaderWrapper>
+                    }
+                  />
+                  <Route
+                    path="experience"
+                    element={
+                      <LoaderWrapper>
+                        <Experience />
+                      </LoaderWrapper>
+                    }
+                  />
+                  <Route
+                    path="education"
+                    element={
+                      <LoaderWrapper>
+                        <Education />
+                      </LoaderWrapper>
+                    }
+                  />
+                  <Route
+                    path="certifications"
+                    element={
+                      <LoaderWrapper>
+                        <Certifications />
+                      </LoaderWrapper>
+                    }
+                  />
+                  <Route
+                    path="contact"
+                    element={
+                      <LoaderWrapper>
+                        <Contact />
+                      </LoaderWrapper>
+                    }
+                  />
                 </Route>
 
                 {/* Admin */}
