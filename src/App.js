@@ -1,5 +1,6 @@
 import React, { Suspense, lazy, useState, useEffect } from "react";
 import { Routes, Route, useLocation, useNavigationType } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 import Loader from "./components/Loader";
 import ScrollToTop from "./components/ScrollToTop";
@@ -32,7 +33,7 @@ export default function App() {
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
   const [contentLoaded, setContentLoaded] = useState(false);
 
-  // Minimum display time
+  // Minimum display time for loader (e.g., 800ms)
   useEffect(() => {
     const timer = setTimeout(() => setMinTimeElapsed(true), 800);
     return () => clearTimeout(timer);
@@ -56,9 +57,13 @@ export default function App() {
       <AuthProvider>
         <LoadingProvider>
           <ScrollToTop />
-          {showLoader && <Loader />}
 
-          {/* Suspense fallback is null because we handle loader globally */}
+          {/* Loader */}
+          <AnimatePresence>
+            {showLoader && <Loader key="loader" />}
+          </AnimatePresence>
+
+          {/* Suspense for lazy loading */}
           <Suspense fallback={null}>
             <Routes>
               <Route path="/" element={<MainLayout />}>
@@ -93,11 +98,11 @@ export default function App() {
 }
 
 // ------------------------
-// Wrapper component to signal content is mounted
+// Wrapper component to signal page is loaded
 // ------------------------
 function PageWrapper({ Component, setLoaded }) {
   useEffect(() => {
-    setLoaded(true);
+    setLoaded(true); // marks page as loaded
   }, [setLoaded]);
 
   return <Component />;
