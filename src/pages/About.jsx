@@ -1,3 +1,4 @@
+// frontend/src/pages/About.jsx
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -12,7 +13,7 @@ import {
   FaTelegram,
   FaFacebook,
 } from "react-icons/fa";
-import DataEngineerImg from '../assets/data-engineer.jpg'
+import DataEngineerImg from "../assets/data-engineer.jpg";
 
 // ----------------------
 // Skeleton Loader
@@ -22,27 +23,17 @@ function AboutSkeleton() {
     <section className="flex flex-col md:flex-row items-center gap-8 px-4 py-8 md:py-12">
       {/* Left column */}
       <div className="flex-1 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 space-y-4 animate-pulse">
-        <div className="h-8 w-3/4 bg-gray-400 rounded"></div>
+        <div className="h-6 w-1/3 bg-gray-400 rounded"></div>
         <div className="h-4 w-full bg-gray-300 rounded"></div>
         <div className="h-4 w-5/6 bg-gray-300 rounded"></div>
-        <div className="h-6 w-1/2 bg-gray-400 rounded mt-4"></div>
-        <div className="h-4 w-1/3 bg-gray-300 rounded mt-2"></div>
-        <div className="h-4 w-2/3 bg-gray-300 rounded mt-1"></div>
-        <div className="h-10 w-1/2 bg-gray-400 rounded mt-4"></div>
+        <div className="h-6 w-1/4 bg-gray-400 rounded mt-4"></div>
       </div>
-
       {/* Right column */}
-      <div className="flex-1 flex flex-col items-center gap-4 animate-pulse">
+      <div className="flex-1 flex flex-col items-center gap-6 animate-pulse">
         <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl bg-gray-300"></div>
-        <div className="h-6 w-1/2 bg-gray-400 rounded mt-2"></div>
-        <div className="h-4 w-1/3 bg-gray-300 rounded"></div>
+        <div className="h-6 w-1/3 bg-gray-400 rounded"></div>
+        <div className="h-4 w-1/2 bg-gray-300 rounded"></div>
         <div className="h-4 w-2/3 bg-gray-300 rounded"></div>
-        <div className="flex gap-4 mt-4">
-          <div className="w-10 h-10 rounded-full bg-gray-400"></div>
-          <div className="w-10 h-10 rounded-full bg-gray-400"></div>
-          <div className="w-10 h-10 rounded-full bg-gray-400"></div>
-          <div className="w-10 h-10 rounded-full bg-gray-400"></div>
-        </div>
       </div>
     </section>
   );
@@ -72,7 +63,7 @@ export default function About() {
   if (!profile) return <AboutSkeleton />;
 
   const { about, social, hero } = profile;
-  const shortBio = about.bio?.slice(0, 180);
+  const shortBio = about.bio?.slice(0, 180); // shorter for mobile
 
   return (
     <motion.section
@@ -92,6 +83,7 @@ export default function About() {
           {about.headline || "About Me"}
         </h2>
 
+        {/* Collapsible Bio */}
         <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
           {expanded ? about.bio : `${shortBio}...`}
           {about.bio?.length > 180 && (
@@ -159,7 +151,7 @@ export default function About() {
           className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-xl border-2 border-sriBlue-300 dark:border-sriBlue-700 overflow-hidden bg-gradient-to-br from-sriBlue-100 to-sriTeal-50 dark:from-sriBlue-900 dark:to-sriTeal-900"
         >
           <img
-            src={DataEngineerImg} // <-- use public folder path
+            src={"/assets/data-engineer.jpg" || DataEngineerImg}
             alt="Data Engineer"
             className="w-full h-full object-cover"
             loading="lazy"
