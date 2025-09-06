@@ -33,7 +33,7 @@ export default function App() {
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
   const [contentLoaded, setContentLoaded] = useState(false);
 
-  // Minimum display time for loader (e.g., 800ms)
+  // Minimum display time for loader (800ms)
   useEffect(() => {
     const timer = setTimeout(() => setMinTimeElapsed(true), 800);
     return () => clearTimeout(timer);
@@ -63,7 +63,7 @@ export default function App() {
             {showLoader && <Loader key="loader" />}
           </AnimatePresence>
 
-          {/* Suspense for lazy loading */}
+          {/* Suspense for lazy-loaded pages */}
           <Suspense fallback={null}>
             <Routes>
               <Route path="/" element={<MainLayout />}>
@@ -98,7 +98,7 @@ export default function App() {
 }
 
 // ------------------------
-// Wrapper component to signal page is loaded
+// Page wrapper to mark content as loaded
 // ------------------------
 function PageWrapper({ Component, setLoaded }) {
   useEffect(() => {
