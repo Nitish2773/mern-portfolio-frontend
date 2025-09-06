@@ -20,12 +20,12 @@ export default function MainLayout() {
       {/* Main content with enough bottom padding to avoid footer overlap */}
       <main
         className="
-          mt-8 
-          pb-24 md:pb-28      /* ensures content is visible above footer */
-          relative z-10 transition-all duration-300
-          md:ml-20 md:pl-6 
-          lg:ml-28 lg:pl-8
-        "
+    mt-8
+    pb-32 md:pb-36       /* extra bottom padding for fixed footer */
+    z-10 transition-all duration-300
+    md:ml-20 md:pl-6 
+    lg:ml-28 lg:pl-8
+  "
       >
         <Outlet />
       </main>

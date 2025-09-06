@@ -1,14 +1,20 @@
 import React from "react";
 import { FaHeart } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 export default function Footer() {
   return (
-    <footer
+    <motion.footer
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
       className="
         bg-gradient-to-r 
         from-sriBlue-600 to-sriBlue-800 
         dark:from-sriBlue-900 dark:to-sriBlue-950
-        text-white w-full z-40 md:fixed md:bottom-0 md:left-0 shadow-inner
+        text-white w-full z-40 
+        md:fixed md:bottom-0 md:left-0
+        shadow-inner
         transition-colors duration-300
       "
     >
@@ -33,6 +39,6 @@ export default function Footer() {
           © {new Date().getFullYear()} All rights reserved.
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }
