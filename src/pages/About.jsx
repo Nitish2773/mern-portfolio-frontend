@@ -67,6 +67,7 @@ export default function About() {
     fetchProfile();
   }, []);
 
+  // Inline skeleton while data is loading
   if (!profile) return <AboutSkeleton />;
 
   const { about, social, hero } = profile;

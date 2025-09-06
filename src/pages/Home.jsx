@@ -1,8 +1,6 @@
-// frontend/src/pages/Home.jsx
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { useLoading } from "../Context/LoadingContext";
 
 // Lazy-loaded sections
 const About = lazy(() => import("./About"));
@@ -38,7 +36,6 @@ function ProfileSkeleton() {
 // Home Component
 // ----------------------
 export default function Home() {
-  const { loading } = useLoading();
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(true);
 
@@ -71,20 +68,7 @@ export default function Home() {
     },
   };
 
-  // Show loader or skeleton
-  if (loading) {
-    return (
-      <motion.div
-        key="loader"
-        initial={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 dark:bg-black/50"
-      >
-        <div className="border-t-4 border-b-4 border-sriBlue-500 rounded-full animate-spin w-16 h-16"></div>
-      </motion.div>
-    );
-  }
-
+  // Show skeleton while fetching profile
   if (profileLoading) return <ProfileSkeleton />;
 
   return (
@@ -110,21 +94,20 @@ export default function Home() {
             {hero.caption ||
               "Full-Stack Developer 🚀 | Data Engineer 📊 | Problem Solver 💡"}
           </p>
-        <div className="flex flex-col sm:flex-row gap-3 mt-3 sm:mt-4 justify-center md:justify-start">
-  <button
-    onClick={() => scrollToSection("projects")}
-    className="w-full sm:w-auto px-6 py-2 bg-sriBlue-500 text-white rounded-lg shadow-md hover:bg-sriBlue-600 transition text-center"
-  >
-    View Projects
-  </button>
-  <button
-    onClick={() => scrollToSection("contact")}
-    className="w-full sm:w-auto px-6 py-2 border border-sriBlue-500 text-sriBlue-500 rounded-lg hover:bg-sriBlue-50 dark:hover:bg-sriBlue-800 transition text-center"
-  >
-    Contact Me
-  </button>
-</div>
-
+          <div className="flex flex-col sm:flex-row gap-3 mt-3 sm:mt-4 justify-center md:justify-start">
+            <button
+              onClick={() => scrollToSection("projects")}
+              className="w-full sm:w-auto px-6 py-2 bg-sriBlue-500 text-white rounded-lg shadow-md hover:bg-sriBlue-600 transition text-center"
+            >
+              View Projects
+            </button>
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="w-full sm:w-auto px-6 py-2 border border-sriBlue-500 text-sriBlue-500 rounded-lg hover:bg-sriBlue-50 dark:hover:bg-sriBlue-800 transition text-center"
+            >
+              Contact Me
+            </button>
+          </div>
         </div>
 
         {/* Right - Profile Image */}
@@ -169,7 +152,9 @@ export default function Home() {
   );
 }
 
-// Add this helper function in Home.jsx
+// ----------------------
+// Helper to scroll to a section
+// ----------------------
 const scrollToSection = (id) => {
   const element = document.getElementById(id);
   if (element) {
