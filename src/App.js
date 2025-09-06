@@ -1,5 +1,6 @@
-import React, { Suspense, lazy, useState, useEffect } from "react";
-import { Routes, Route, useLocation, useNavigationType } from "react-router-dom";
+// src/App.jsx
+import React, { Suspense, lazy } from "react";
+import { Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 import Loader from "./components/Loader";
@@ -26,83 +27,48 @@ const AdminDashboard = lazy(() => import("./admin/AdminDashboard"));
 const AdminLogin = lazy(() => import("./admin/Login"));
 
 export default function App() {
-  const location = useLocation();
-  const navType = useNavigationType();
-
-  const [showLoader, setShowLoader] = useState(true);
-  const [minTimeElapsed, setMinTimeElapsed] = useState(false);
-  const [contentLoaded, setContentLoaded] = useState(false);
-
-  // Minimum loader display time (800ms)
-  useEffect(() => {
-    const timer = setTimeout(() => setMinTimeElapsed(true), 800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Show loader on route change
-  useEffect(() => {
-    setShowLoader(true);
-    setContentLoaded(false);
-  }, [location, navType]);
-
-  // Hide loader when both minTimeElapsed & contentLoaded are true
-  useEffect(() => {
-    if (minTimeElapsed && contentLoaded) {
-      setShowLoader(false);
-    }
-  }, [minTimeElapsed, contentLoaded]);
-
   return (
     <ThemeProvider>
       <AuthProvider>
         <LoadingProvider>
           <ScrollToTop />
 
-          {/* Global Loader: Skip Home */}
-          <AnimatePresence>
-            {showLoader && location.pathname !== "/" && <Loader key="loader" />}
-          </AnimatePresence>
+          {/* AnimatePresence + Suspense ensures global loader only for route load */}
+          <Suspense fallback={<Loader />}>
+            <AnimatePresence>
+              <Routes>
+                <Route path="/" element={<MainLayout />}>
+                  {/* Home handles its own skeleton */}
+                  <Route index element={<Home />} />
 
-          <Suspense fallback={null}>
-            <Routes>
-              <Route path="/" element={<MainLayout />}>
-                {/* Home: Handles its own skeleton */}
-                <Route index element={<Home />} />
+                  {/* Other pages */}
+                  <Route path="about" element={<About />} />
+                  <Route path="projects" element={<Projects />} />
+                  <Route path="skills" element={<Skills />} />
+                  <Route path="experience" element={<Experience />} />
+                  <Route path="education" element={<Education />} />
+                  <Route path="certifications" element={<Certifications />} />
+                  <Route path="contact" element={<Contact />} />
+                </Route>
 
-                {/* Other pages: use PageWrapper */}
-                <Route path="about" element={<PageWrapper Component={About} setLoaded={setContentLoaded} />} />
-                <Route path="projects" element={<PageWrapper Component={Projects} setLoaded={setContentLoaded} />} />
-                <Route path="skills" element={<PageWrapper Component={Skills} setLoaded={setContentLoaded} />} />
-                <Route path="experience" element={<PageWrapper Component={Experience} setLoaded={setContentLoaded} />} />
-                <Route path="education" element={<PageWrapper Component={Education} setLoaded={setContentLoaded} />} />
-                <Route path="certifications" element={<PageWrapper Component={Certifications} setLoaded={setContentLoaded} />} />
-                <Route path="contact" element={<PageWrapper Component={Contact} setLoaded={setContentLoaded} />} />
-              </Route>
+                {/* Admin */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route
+                  path="/admin/dashboard"
+                  element={
+                    <PrivateRoute>
+                      <AdminDashboard />
+                    </PrivateRoute>
+                  }
+                />
 
-              {/* Admin */}
-              <Route path="/admin/login" element={<PageWrapper Component={AdminLogin} setLoaded={setContentLoaded} />} />
-              <Route path="/admin/dashboard" element={
-                <PrivateRoute>
-                  <PageWrapper Component={AdminDashboard} setLoaded={setContentLoaded} />
-                </PrivateRoute>
-              } />
-
-              <Route path="*" element={<PageWrapper Component={NotFound} setLoaded={setContentLoaded} />} />
-            </Routes>
+                {/* Fallback */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AnimatePresence>
           </Suspense>
         </LoadingProvider>
       </AuthProvider>
     </ThemeProvider>
   );
-}
-
-// ------------------------
-// PageWrapper: marks page as loaded
-// ------------------------
-function PageWrapper({ Component, setLoaded }) {
-  useEffect(() => {
-    setLoaded(true);
-  }, [setLoaded]);
-
-  return <Component />;
 }

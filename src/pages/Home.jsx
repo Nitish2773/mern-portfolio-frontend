@@ -55,6 +55,7 @@ export default function Home() {
 
   const hero = profile?.hero || {};
 
+  // Show skeleton while profile is loading
   if (profileLoading) return <ProfileSkeleton />;
 
   return (
@@ -91,7 +92,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Sections */}
+      {/* Lazy-loaded Sections with Suspense skeleton fallback */}
       <Suspense fallback={null}>
         <About />
         <Projects />
