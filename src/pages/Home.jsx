@@ -89,6 +89,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col relative bg-gradient-to-b from-sriBlue-50 via-white to-sriTeal-50 dark:from-sriBlue-950 dark:via-gray-900 dark:to-sriTeal-900">
+      
       {/* Hero Section */}
       <motion.section
         variants={itemVariants}
@@ -109,20 +110,21 @@ export default function Home() {
             {hero.caption ||
               "Full-Stack Developer 🚀 | Data Engineer 📊 | Problem Solver 💡"}
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 mt-3 sm:mt-4 justify-center md:justify-start">
-            <button
-              onClick={() => scrollToSection("projects")}
-              className="w-full sm:w-auto px-6 py-2 bg-sriBlue-500 text-white rounded-lg shadow-md hover:bg-sriBlue-600 transition text-center"
-            >
-              View Projects
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="w-full sm:w-auto px-6 py-2 border border-sriBlue-500 text-sriBlue-500 rounded-lg hover:bg-sriBlue-50 dark:hover:bg-sriBlue-800 transition text-center"
-            >
-              Contact Me
-            </button>
-          </div>
+        <div className="flex flex-col sm:flex-row gap-3 mt-3 sm:mt-4 justify-center md:justify-start">
+  <button
+    onClick={() => scrollToSection("projects")}
+    className="w-full sm:w-auto px-6 py-2 bg-sriBlue-500 text-white rounded-lg shadow-md hover:bg-sriBlue-600 transition text-center"
+  >
+    View Projects
+  </button>
+  <button
+    onClick={() => scrollToSection("contact")}
+    className="w-full sm:w-auto px-6 py-2 border border-sriBlue-500 text-sriBlue-500 rounded-lg hover:bg-sriBlue-50 dark:hover:bg-sriBlue-800 transition text-center"
+  >
+    Contact Me
+  </button>
+</div>
+
         </div>
 
         {/* Right - Profile Image */}
