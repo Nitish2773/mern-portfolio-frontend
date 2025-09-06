@@ -24,12 +24,15 @@ export default function Experience() {
   useEffect(() => {
     const fetchExperiences = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE}/api/experience`);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_BASE}/api/experience`
+        );
         setExperiences(
           res.data.sort((a, b) => {
             if (!a.endDate && b.endDate) return -1;
             if (a.endDate && !b.endDate) return 1;
-            if (!a.endDate && !b.endDate) return new Date(b.startDate) - new Date(a.startDate);
+            if (!a.endDate && !b.endDate)
+              return new Date(b.startDate) - new Date(a.startDate);
             return new Date(b.endDate) - new Date(a.endDate);
           })
         );
@@ -43,10 +46,7 @@ export default function Experience() {
   }, []);
 
   return (
-    <section
-      id="experience"
-      className="py-12 sm:py-16 bg-gradient-to-b from-white to-gray-50 dark:from-gray-950 dark:to-gray-900"
-    >
+    <section id="experience" className="py-12 sm:py-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl sm:text-4xl font-extrabold mb-10 sm:mb-12 text-center text-gray-900 dark:text-white">
           Experience
@@ -95,7 +95,9 @@ export default function Experience() {
                       <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                         {exp.company}{" "}
                         {exp.location && (
-                          <span className="text-gray-400">• {exp.location}</span>
+                          <span className="text-gray-400">
+                            • {exp.location}
+                          </span>
                         )}
                       </p>
                       <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1 sm:gap-2 mt-1">

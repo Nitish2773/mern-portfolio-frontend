@@ -49,10 +49,7 @@ export default function Education() {
   }, []);
 
   return (
-    <section
-      id="education"
-      className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950"
-    >
+    <section id="education" className="py-16">
       <div className="max-w-6xl mx-auto px-6">
         <h2 className="text-4xl font-extrabold mb-16 text-center text-gray-900 dark:text-white">
           Education
