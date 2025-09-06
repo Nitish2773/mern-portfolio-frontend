@@ -33,7 +33,7 @@ export default function App() {
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
   const [contentLoaded, setContentLoaded] = useState(false);
 
-  // Minimum display time for loader (800ms)
+  // Minimum loader display time (800ms)
   useEffect(() => {
     const timer = setTimeout(() => setMinTimeElapsed(true), 800);
     return () => clearTimeout(timer);
@@ -58,16 +58,18 @@ export default function App() {
         <LoadingProvider>
           <ScrollToTop />
 
-          {/* Loader */}
+          {/* Global Loader: Skip Home */}
           <AnimatePresence>
-            {showLoader && <Loader key="loader" />}
+            {showLoader && location.pathname !== "/" && <Loader key="loader" />}
           </AnimatePresence>
 
-          {/* Suspense for lazy-loaded pages */}
           <Suspense fallback={null}>
             <Routes>
               <Route path="/" element={<MainLayout />}>
-                <Route index element={<PageWrapper Component={Home} setLoaded={setContentLoaded} />} />
+                {/* Home: Handles its own skeleton */}
+                <Route index element={<Home />} />
+
+                {/* Other pages: use PageWrapper */}
                 <Route path="about" element={<PageWrapper Component={About} setLoaded={setContentLoaded} />} />
                 <Route path="projects" element={<PageWrapper Component={Projects} setLoaded={setContentLoaded} />} />
                 <Route path="skills" element={<PageWrapper Component={Skills} setLoaded={setContentLoaded} />} />
@@ -79,14 +81,11 @@ export default function App() {
 
               {/* Admin */}
               <Route path="/admin/login" element={<PageWrapper Component={AdminLogin} setLoaded={setContentLoaded} />} />
-              <Route
-                path="/admin/dashboard"
-                element={
-                  <PrivateRoute>
-                    <PageWrapper Component={AdminDashboard} setLoaded={setContentLoaded} />
-                  </PrivateRoute>
-                }
-              />
+              <Route path="/admin/dashboard" element={
+                <PrivateRoute>
+                  <PageWrapper Component={AdminDashboard} setLoaded={setContentLoaded} />
+                </PrivateRoute>
+              } />
 
               <Route path="*" element={<PageWrapper Component={NotFound} setLoaded={setContentLoaded} />} />
             </Routes>
@@ -98,11 +97,11 @@ export default function App() {
 }
 
 // ------------------------
-// Page wrapper to mark content as loaded
+// PageWrapper: marks page as loaded
 // ------------------------
 function PageWrapper({ Component, setLoaded }) {
   useEffect(() => {
-    setLoaded(true); // marks page as loaded
+    setLoaded(true);
   }, [setLoaded]);
 
   return <Component />;

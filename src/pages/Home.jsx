@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 
@@ -12,7 +12,7 @@ const Certifications = lazy(() => import("./Certifications"));
 const Contact = lazy(() => import("./Contact"));
 
 // ----------------------
-// Hero Skeleton (Profile)
+// Hero Skeleton
 // ----------------------
 function ProfileSkeleton() {
   return (
@@ -39,13 +39,10 @@ export default function Home() {
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(true);
 
-  // Fetch profile data
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_API_BASE}/api/profile`
-        );
+        const { data } = await axios.get(`${process.env.REACT_APP_API_BASE}/api/profile`);
         setProfile(data);
       } catch (err) {
         console.error("Error fetching profile:", err);
@@ -58,13 +55,6 @@ export default function Home() {
 
   const hero = profile?.hero || {};
 
-  // Motion variants
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
-
-  // Show skeleton while hero/profile is loading
   if (profileLoading) return <ProfileSkeleton />;
 
   return (
@@ -72,55 +62,36 @@ export default function Home() {
       
       {/* Hero Section */}
       <motion.section
-        variants={itemVariants}
-        initial="hidden"
-        whileInView="visible"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         className="relative flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 px-4 sm:px-6 md:px-12 py-8 sm:py-12 md:py-16 overflow-hidden"
       >
-        {/* Left - Text */}
         <div className="flex-1 mt-0 text-center md:text-left">
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-3 sm:mb-4 leading-snug sm:leading-tight">
-            Hi, I am{" "}
-            <span className="text-sriBlue-500 dark:text-sriBlue-400">
-              {hero.name || "Sri Nitish"}
-            </span>
+            Hi, I am <span className="text-sriBlue-500 dark:text-sriBlue-400">{hero.name || "Sri Nitish"}</span>
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-4 sm:mb-6">
-            {hero.caption ||
-              "Full-Stack Developer 🚀 | Data Engineer 📊 | Problem Solver 💡"}
+            {hero.caption || "Full-Stack Developer 🚀 | Data Engineer 📊 | Problem Solver 💡"}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-3 sm:mt-4 justify-center md:justify-start">
-            <button
-              onClick={() => scrollToSection("projects")}
-              className="w-full sm:w-auto px-6 py-2 bg-sriBlue-500 text-white rounded-lg shadow-md hover:bg-sriBlue-600 transition text-center"
-            >
+            <button onClick={() => scrollToSection("projects")} className="w-full sm:w-auto px-6 py-2 bg-sriBlue-500 text-white rounded-lg shadow-md hover:bg-sriBlue-600 transition text-center">
               View Projects
             </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="w-full sm:w-auto px-6 py-2 border border-sriBlue-500 text-sriBlue-500 rounded-lg hover:bg-sriBlue-50 dark:hover:bg-sriBlue-800 transition text-center"
-            >
+            <button onClick={() => scrollToSection("contact")} className="w-full sm:w-auto px-6 py-2 border border-sriBlue-500 text-sriBlue-500 rounded-lg hover:bg-sriBlue-50 dark:hover:bg-sriBlue-800 transition text-center">
               Contact Me
             </button>
           </div>
         </div>
 
-        {/* Right - Profile Image */}
         <div className="flex-1 flex justify-center mt-6 md:mt-0">
           <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full hero-glow float-y shadow-xl border-4 border-sriBlue-200 dark:border-sriBlue-700 overflow-hidden">
-            <img
-              src={hero.profileImage || "/assets/profile.jpg"}
-              alt={hero.name || "Profile"}
-              loading="lazy"
-              decoding="async"
-              className="object-cover w-full h-full"
-            />
+            <img src={hero.profileImage || "/assets/profile.jpg"} alt={hero.name || "Profile"} className="object-cover w-full h-full" />
           </div>
         </div>
       </motion.section>
 
-      {/* Sections - Each handles its own skeleton internally */}
+      {/* Sections */}
       <Suspense fallback={null}>
         <About />
         <Projects />
@@ -135,11 +106,9 @@ export default function Home() {
 }
 
 // ----------------------
-// Helper to scroll to a section
+// Scroll helper
 // ----------------------
 const scrollToSection = (id) => {
-  const element = document.getElementById(id);
-  if (element) {
-    element.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 };
