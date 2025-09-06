@@ -1,4 +1,3 @@
-// frontend/src/components/Sidebar.jsx
 import React, { useState } from "react";
 import {
   FaGithub,
@@ -16,23 +15,11 @@ export default function Sidebar() {
 
   const icons = [
     { name: "github", icon: FaGithub, url: "https://github.com/Nitish2773" },
-    {
-      name: "linkedin",
-      icon: FaLinkedin,
-      url: "https://www.linkedin.com/in/sri-nitish-kamisetti/",
-    },
+    { name: "linkedin", icon: FaLinkedin, url: "https://www.linkedin.com/in/sri-nitish-kamisetti/" },
     { name: "twitter", icon: FaTwitter, url: "https://twitter.com/srinitish27" },
-    {
-      name: "facebook",
-      icon: FaFacebookF,
-      url: "https://www.facebook.com/nitish.k.530435?mibextid=ZbWKwL",
-    },
+    { name: "facebook", icon: FaFacebookF, url: "https://www.facebook.com/nitish.k.530435?mibextid=ZbWKwL" },
     { name: "telegram", icon: FaTelegramPlane, url: "https://t.me/Srinitish" },
-    {
-      name: "email",
-      icon: FaEnvelope,
-      url: "mailto:nitishkamisetti123@gmail.com",
-    },
+    { name: "email", icon: FaEnvelope, url: "mailto:nitishkamisetti123@gmail.com" },
   ];
 
   return (
@@ -67,27 +54,19 @@ export default function Sidebar() {
       </aside>
 
       {/* Mobile Sidebar */}
-      <aside className="flex md:hidden fixed bottom-24 left-4 z-50 flex-col items-center gap-2">
+      <aside className="flex md:hidden fixed bottom-6 right-6 z-50 flex-col items-end gap-2">
         {/* Floating shutter button */}
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
           className="p-4 rounded-full bg-sriBlue-500 text-white shadow-lg hover:bg-sriBlue-600 transition"
-          animate={{
-            rotate: isOpen ? 45 : 0,
-            y: isOpen ? 0 : [0, -3, 0],
-          }}
+          animate={{ rotate: isOpen ? 45 : 0 }}
           whileHover={{ scale: 1.1 }}
-          transition={{
-            rotate: { type: "spring", stiffness: 200, damping: 20 },
-            y: isOpen
-              ? { duration: 0 }
-              : { repeat: Infinity, repeatType: "loop", duration: 2, ease: "easeInOut", delay: 0.5 },
-          }}
+          transition={{ rotate: { type: "spring", stiffness: 200, damping: 20 } }}
         >
           <FaPlus size={22} />
         </motion.button>
 
-        {/* Overlay + Panel */}
+        {/* Overlay + Sliding Panel */}
         <AnimatePresence>
           {isOpen && (
             <>
@@ -101,14 +80,14 @@ export default function Sidebar() {
                 onClick={() => setIsOpen(false)}
               />
 
-              {/* Sliding icons panel */}
+              {/* Bottom sliding panel */}
               <motion.div
                 key="panel"
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ type: "spring", stiffness: 250, damping: 25 }}
-                className="fixed bottom-32 left-4 flex flex-col gap-3 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-xl z-50"
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 100, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                className="fixed bottom-0 right-0 left-0 mx-4 mb-4 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-xl flex justify-around z-50"
               >
                 {icons.map((item, idx) => {
                   const Icon = item.icon;
@@ -118,13 +97,13 @@ export default function Sidebar() {
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center w-12 h-12 rounded-full bg-sriBlue-500 text-white hover:bg-sriBlue-600 shadow-md transition"
+                      className="flex items-center justify-center w-14 h-14 rounded-full bg-sriBlue-500 text-white hover:bg-sriBlue-600 shadow-md transition"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 20 }}
-                      transition={{ delay: idx * 0.07, type: "spring", stiffness: 200, damping: 20 }}
+                      transition={{ delay: idx * 0.05, type: "spring", stiffness: 200, damping: 20 }}
                     >
-                      <Icon size={20} />
+                      <Icon size={22} />
                     </motion.a>
                   );
                 })}
