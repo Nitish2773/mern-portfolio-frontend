@@ -87,8 +87,10 @@ export default function About() {
         className="flex-1 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 
                    text-center md:text-left bg-white dark:bg-gray-900"
       >
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4
-                       text-gray-900 dark:text-sriTeal-300">
+        <h2
+          className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4
+               text-gray-900 dark:text-white"
+        >
           {about.headline || "About Me"}
         </h2>
 
@@ -108,22 +110,28 @@ export default function About() {
         {/* Contact Info */}
         <div className="space-y-2 text-gray-800 dark:text-gray-200 text-sm sm:text-base">
           {about.location && (
-            <div className="flex items-center justify-center md:justify-start gap-2
-                            hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
+            <div
+              className="flex items-center justify-center md:justify-start gap-2
+                            hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition"
+            >
               <FaMapMarkerAlt className="text-sriBlue-500 dark:text-sriTeal-400" />
               {about.location}
             </div>
           )}
           {about.email && (
-            <div className="flex items-center justify-center md:justify-start gap-2
-                            hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
+            <div
+              className="flex items-center justify-center md:justify-start gap-2
+                            hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition"
+            >
               <FaEnvelope className="text-sriBlue-500 dark:text-sriTeal-400" />
               {about.email}
             </div>
           )}
           {about.phone && (
-            <div className="flex items-center justify-center md:justify-start gap-2
-                            hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
+            <div
+              className="flex items-center justify-center md:justify-start gap-2
+                            hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition"
+            >
               <FaPhone className="text-sriBlue-500 dark:text-sriTeal-400" />
               {about.phone}
             </div>
@@ -145,8 +153,10 @@ export default function About() {
             </a>
           )}
           {about.availability && (
-            <span className="px-4 py-2 rounded-lg border border-sriBlue-500 dark:border-sriTeal-500
-                             text-sriBlue-500 dark:text-sriTeal-500 font-medium text-sm sm:text-base">
+            <span
+              className="px-4 py-2 rounded-lg border border-sriBlue-500 dark:border-sriTeal-500
+                             text-sriBlue-500 dark:text-sriTeal-500 font-medium text-sm sm:text-base"
+            >
               {about.availability}
             </span>
           )}
@@ -176,8 +186,10 @@ export default function About() {
           />
         </motion.div>
 
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold 
-                       text-gray-900 dark:text-gray-100 text-center">
+        <h3
+          className="text-xl sm:text-2xl md:text-3xl font-semibold 
+                       text-gray-900 dark:text-gray-100 text-center"
+        >
           {hero?.name || "Sri Nitish"}
         </h3>
         <p className="text-gray-700 dark:text-gray-200 font-medium text-sm sm:text-base md:text-lg text-center">
