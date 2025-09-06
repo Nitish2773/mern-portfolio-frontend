@@ -23,23 +23,23 @@ function AboutSkeleton() {
     <section className="flex flex-col md:flex-row items-center gap-8 px-4 py-8 md:py-12">
       {/* Left column */}
       <div className="w-full md:flex-1 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 space-y-4 animate-pulse">
-        <div className="h-6 w-1/2 bg-gray-400 rounded"></div>
-        <div className="h-4 w-full bg-gray-300 rounded"></div>
-        <div className="h-4 w-5/6 bg-gray-300 rounded"></div>
-        <div className="h-6 w-1/4 bg-gray-400 rounded mt-4"></div>
-        <div className="h-4 w-2/3 bg-gray-300 rounded mt-2"></div>
+        <div className="h-6 w-1/2 bg-gray-400 dark:bg-gray-600 rounded"></div>
+        <div className="h-4 w-full bg-gray-300 dark:bg-gray-500 rounded"></div>
+        <div className="h-4 w-5/6 bg-gray-300 dark:bg-gray-500 rounded"></div>
+        <div className="h-6 w-1/4 bg-gray-400 dark:bg-gray-600 rounded mt-4"></div>
+        <div className="h-4 w-2/3 bg-gray-300 dark:bg-gray-500 rounded mt-2"></div>
       </div>
 
       {/* Right column */}
       <div className="w-full md:flex-1 flex flex-col items-center gap-6 animate-pulse">
-        <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-2xl bg-gray-300"></div>
-        <div className="h-6 w-1/2 bg-gray-400 rounded"></div>
-        <div className="h-4 w-2/3 bg-gray-300 rounded"></div>
-        <div className="h-4 w-3/4 bg-gray-300 rounded"></div>
+        <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-2xl bg-gray-300 dark:bg-gray-600"></div>
+        <div className="h-6 w-1/2 bg-gray-400 dark:bg-gray-600 rounded"></div>
+        <div className="h-4 w-2/3 bg-gray-300 dark:bg-gray-500 rounded"></div>
+        <div className="h-4 w-3/4 bg-gray-300 dark:bg-gray-500 rounded"></div>
         <div className="flex gap-3 mt-4">
-          <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
-          <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
-          <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+          <div className="w-10 h-10 bg-gray-300 dark:bg-gray-500 rounded-full"></div>
+          <div className="w-10 h-10 bg-gray-300 dark:bg-gray-500 rounded-full"></div>
+          <div className="w-10 h-10 bg-gray-300 dark:bg-gray-500 rounded-full"></div>
         </div>
       </div>
     </section>
@@ -84,19 +84,19 @@ export default function About() {
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
-        className="flex-1 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 text-center md:text-left"
+        className="flex-1 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 text-center md:text-left bg-white dark:bg-gray-900"
       >
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-sriBlue-600 dark:text-sriTeal-300">
           {about.headline || "About Me"}
         </h2>
 
         {/* Collapsible Bio */}
-        <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+        <p className="text-sm sm:text-base md:text-lg text-gray-800 dark:text-gray-200 leading-relaxed mb-4">
           {expanded ? about.bio : `${shortBio}...`}
           {about.bio?.length > 180 && (
             <button
               onClick={() => setExpanded(!expanded)}
-              className="ml-1 text-sriBlue-500 hover:underline font-medium"
+              className="ml-1 text-sriBlue-500 dark:text-sriTeal-400 hover:underline font-medium"
             >
               {expanded ? "Read Less" : "Read More"}
             </button>
@@ -104,22 +104,22 @@ export default function About() {
         </p>
 
         {/* Contact Info */}
-        <div className="space-y-2 text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+        <div className="space-y-2 text-gray-800 dark:text-gray-200 text-sm sm:text-base">
           {about.location && (
-            <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 transition">
-              <FaMapMarkerAlt className="text-sriBlue-500" />
+            <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
+              <FaMapMarkerAlt className="text-sriBlue-500 dark:text-sriTeal-400" />
               {about.location}
             </div>
           )}
           {about.email && (
-            <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 transition">
-              <FaEnvelope className="text-sriBlue-500" />
+            <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
+              <FaEnvelope className="text-sriBlue-500 dark:text-sriTeal-400" />
               {about.email}
             </div>
           )}
           {about.phone && (
-            <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 transition">
-              <FaPhone className="text-sriBlue-500" />
+            <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
+              <FaPhone className="text-sriBlue-500 dark:text-sriTeal-400" />
               {about.phone}
             </div>
           )}
@@ -132,13 +132,13 @@ export default function About() {
               href={about.resumeUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 bg-sriBlue-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-sriBlue-600 transition text-sm sm:text-base justify-center"
+              className="flex items-center gap-2 bg-sriBlue-500 dark:bg-sriTeal-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-sriBlue-600 dark:hover:bg-sriTeal-600 transition text-sm sm:text-base justify-center"
             >
               <FaFileDownload /> Resume
             </a>
           )}
           {about.availability && (
-            <span className="px-4 py-2 rounded-lg border border-sriBlue-500 text-sriBlue-500 font-medium text-sm sm:text-base">
+            <span className="px-4 py-2 rounded-lg border border-sriBlue-500 dark:border-sriTeal-500 text-sriBlue-500 dark:text-sriTeal-500 font-medium text-sm sm:text-base">
               {about.availability}
             </span>
           )}
@@ -155,7 +155,7 @@ export default function About() {
         <motion.div
           animate={{ y: [0, -15, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-xl border-2 border-sriBlue-300 dark:border-sriBlue-700 overflow-hidden bg-gradient-to-br from-sriBlue-100 to-sriTeal-50 dark:from-sriBlue-900 dark:to-sriTeal-900"
+          className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-xl border-2 border-sriBlue-300 dark:border-sriTeal-500 overflow-hidden bg-gradient-to-br from-sriBlue-100 to-sriTeal-50 dark:from-sriBlue-900 dark:to-sriTeal-900"
         >
           <img
             src={DataEngineerImg}
@@ -165,13 +165,13 @@ export default function About() {
           />
         </motion.div>
 
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800 dark:text-gray-200 text-center">
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-100 dark:text-gray-100 text-center">
           {hero?.name || "Sri Nitish"}
         </h3>
-        <p className="text-gray-600 dark:text-gray-300 font-medium text-sm sm:text-base md:text-lg text-center">
+        <p className="text-gray-200 dark:text-gray-200 font-medium text-sm sm:text-base md:text-lg text-center">
           {hero?.caption || "Full-Stack Developer | Data Engineer"}
         </p>
-        <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base max-w-xs sm:max-w-sm text-center">
+        <p className="text-gray-300 dark:text-gray-300 text-sm sm:text-base max-w-xs sm:max-w-sm text-center">
           {hero?.description}
         </p>
 
@@ -182,7 +182,7 @@ export default function About() {
               href={social.github}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-sriBlue-500 transform hover:scale-125"
+              className="hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transform hover:scale-125"
             >
               <FaGithub />
             </a>
@@ -192,7 +192,7 @@ export default function About() {
               href={social.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-sriBlue-500 transform hover:scale-125"
+              className="hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transform hover:scale-125"
             >
               <FaLinkedin />
             </a>
@@ -202,7 +202,7 @@ export default function About() {
               href={social.twitter}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-sriBlue-500 transform hover:scale-125"
+              className="hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transform hover:scale-125"
             >
               <FaTwitter />
             </a>
@@ -212,7 +212,7 @@ export default function About() {
               href={social.telegram}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-sriBlue-500 transform hover:scale-125"
+              className="hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transform hover:scale-125"
             >
               <FaTelegram />
             </a>
@@ -222,7 +222,7 @@ export default function About() {
               href={social.facebook}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-sriBlue-500 transform hover:scale-125"
+              className="hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transform hover:scale-125"
             >
               <FaFacebook />
             </a>

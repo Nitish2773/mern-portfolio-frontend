@@ -3,7 +3,9 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { FaGraduationCap, FaCalendarAlt } from "react-icons/fa";
 
-// Skeleton loader for Education (mobile-first)
+// ----------------------
+// Skeleton loader (mobile-first)
+// ----------------------
 function EducationSkeleton({ count = 3 }) {
   return (
     <div className="relative">
@@ -20,6 +22,9 @@ function EducationSkeleton({ count = 3 }) {
   );
 }
 
+// ----------------------
+// Main Component
+// ----------------------
 export default function Education() {
   const [education, setEducation] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -58,7 +63,7 @@ export default function Education() {
           </p>
         ) : (
           <div className="relative">
-            {/* timeline line */}
+            {/* Timeline line */}
             <div className="absolute left-6 sm:left-1/2 transform sm:-translate-x-1/2 w-1 h-full bg-indigo-200 dark:bg-indigo-700 rounded-full"></div>
 
             {education.map((edu, idx) => {
@@ -70,21 +75,25 @@ export default function Education() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  className={`mb-12 flex w-full justify-start sm:justify-${
-                    isLeft ? "start" : "end"
+                  className={`mb-12 flex w-full ${
+                    isLeft
+                      ? "justify-start sm:justify-start"
+                      : "justify-start sm:justify-end"
                   }`}
                 >
                   <div
-                    className={`relative w-full sm:w-[calc(50%-1rem)] bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 hover:scale-[1.02] transition-transform ml-10 sm:ml-0`}
+                    className={`relative w-full sm:w-[calc(50%-1rem)] bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 hover:scale-[1.02] transition-transform ${
+                      isLeft ? "ml-10 sm:ml-0" : "ml-10 sm:mr-0"
+                    }`}
                   >
-                    {/* marker */}
+                    {/* Marker */}
                     <span
-                      className={`absolute -left-6 sm:top-8 sm:${
-                        isLeft ? "-right-3" : "-left-3"
-                      } top-6 w-6 h-6 rounded-full bg-indigo-600 dark:bg-indigo-400 border-4 border-white dark:border-gray-900`}
+                      className={`absolute w-6 h-6 rounded-full bg-indigo-600 dark:bg-indigo-400 border-4 border-white dark:border-gray-900 top-6 sm:top-8 ${
+                        isLeft ? "-left-6 sm:-right-3" : "-left-6 sm:-left-3"
+                      }`}
                     ></span>
 
-                    {/* logo + info */}
+                    {/* Logo + Info */}
                     <div className="flex items-center gap-4 mb-2">
                       {edu.logo ? (
                         <img
@@ -111,7 +120,7 @@ export default function Education() {
                       </div>
                     </div>
 
-                    {/* dates */}
+                    {/* Dates */}
                     <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
                       <FaCalendarAlt className="text-indigo-500" />
                       {new Date(edu.startDate).toLocaleDateString("en-US", {
@@ -127,14 +136,14 @@ export default function Education() {
                         : "Present"}
                     </p>
 
-                    {/* description */}
+                    {/* Description */}
                     {edu.description && (
                       <p className="mt-2 text-gray-700 dark:text-gray-300 text-sm">
                         {edu.description}
                       </p>
                     )}
 
-                    {/* skills */}
+                    {/* Skills */}
                     {edu.skills?.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-2">
                         {edu.skills.map((skill, idx) => (

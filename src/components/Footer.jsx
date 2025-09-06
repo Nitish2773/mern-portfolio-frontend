@@ -1,4 +1,5 @@
 import React from "react";
+import { FaHeart } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -7,24 +8,24 @@ export default function Footer() {
       <div className="hidden md:block h-20"></div>
 
       <footer
-        className="bg-gradient-to-r from-sriBlue-600 to-sriBlue-500 
-                   dark:from-sriBlue-800 dark:to-sriBlue-700
-                   text-white dark:text-gray-200 w-full z-40 md:fixed md:bottom-0 md:left-0"
+        className="bg-gradient-to-r from-sriBlue-500 to-sriBlue-700
+                   dark:from-sriBlue-600 dark:to-sriBlue-800
+                   text-white w-full z-40 md:fixed md:bottom-0 md:left-0 shadow-inner"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
           
           {/* Branding */}
-          <div className="font-bold text-lg text-center sm:text-left">
+          <div className="font-extrabold text-lg text-center sm:text-left bg-clip-text text-transparent bg-gradient-to-r from-sriBlue-300 to-sriTeal-300">
             Sri Nitish
           </div>
 
           {/* Footer message */}
-          <div className="text-sm italic text-center sm:text-center">
-            Designed & Developed ❤️ using MERN
+          <div className="text-sm italic text-center sm:text-center flex items-center justify-center gap-1 text-white dark:text-gray-200">
+            Designed & Developed <FaHeart className="text-red-500" /> using MERN
           </div>
 
           {/* Copyright */}
-          <div className="text-sm text-center sm:text-right">
+          <div className="text-sm text-center sm:text-right text-white dark:text-gray-200">
             © {new Date().getFullYear()} All rights reserved.
           </div>
         </div>
