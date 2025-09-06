@@ -1,4 +1,3 @@
-// frontend/src/components/Contact.jsx
 import { useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -16,7 +15,6 @@ export default function Contact() {
     e.preventDefault();
     setLoading(true);
     setStatus(null);
-
     try {
       await axios.post(`${process.env.REACT_APP_API_BASE}/api/messages`, form);
       setStatus("success");
@@ -29,7 +27,6 @@ export default function Contact() {
     }
   };
 
-  // Animation variants
   const rightPanelVariants = {
     hidden: { opacity: 0, x: 50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } },
@@ -41,33 +38,28 @@ export default function Contact() {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
       {/* Banner */}
-      <div className="text-center mb-12 px-2">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
+      <div className="text-center mb-10 sm:mb-12 px-2">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
           Let's Talk
         </h1>
-        <p className="mt-3 text-gray-600 dark:text-gray-300 text-lg">
+        <p className="mt-2 sm:mt-3 text-gray-600 dark:text-gray-300 text-base sm:text-lg">
           Have a question, project idea, or just want to say hi? I’d love to hear from you.
         </p>
       </div>
 
       {/* Form + Info Panel */}
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
+      <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-10">
         {/* Left: Contact Form */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white dark:bg-gray-800 shadow-xl rounded-3xl p-6 sm:p-8 flex-1 space-y-5"
+          className="bg-white dark:bg-gray-800 shadow-xl rounded-3xl p-4 sm:p-6 md:p-8 flex-1 space-y-4 sm:space-y-5"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {["name", "email"].map((field) => (
-              <motion.div
-                key={field}
-                initial="unfocused"
-                whileFocus="focused"
-                variants={inputVariants}
-              >
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">
+              <motion.div key={field} initial="unfocused" whileFocus="focused" variants={inputVariants}>
+                <label className="block text-sm sm:text-base font-medium text-gray-700 dark:text-gray-300 capitalize">
                   {field}
                 </label>
                 <input
@@ -76,7 +68,7 @@ export default function Contact() {
                   value={form[field]}
                   onChange={handleChange}
                   required
-                  className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-xl p-2 sm:p-3 text-sm sm:text-base focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 />
               </motion.div>
             ))}
@@ -84,7 +76,7 @@ export default function Contact() {
 
           {/* Subject */}
           <motion.div initial="unfocused" whileFocus="focused" variants={inputVariants}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="block text-sm sm:text-base font-medium text-gray-700 dark:text-gray-300">
               Subject
             </label>
             <input
@@ -92,13 +84,13 @@ export default function Contact() {
               name="subject"
               value={form.subject}
               onChange={handleChange}
-              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-xl p-2 sm:p-3 text-sm sm:text-base focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
             />
           </motion.div>
 
           {/* Message */}
           <motion.div initial="unfocused" whileFocus="focused" variants={inputVariants}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="block text-sm sm:text-base font-medium text-gray-700 dark:text-gray-300">
               Message
             </label>
             <textarea
@@ -107,25 +99,25 @@ export default function Contact() {
               onChange={handleChange}
               required
               rows="5"
-              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-xl p-2 sm:p-3 text-sm sm:text-base focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
             />
           </motion.div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 dark:bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 dark:hover:bg-blue-600 transition transform hover:-translate-y-1 hover:scale-105 disabled:opacity-50"
+            className="w-full bg-blue-600 dark:bg-blue-500 text-white py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-blue-700 dark:hover:bg-blue-600 transition transform hover:-translate-y-1 hover:scale-105 disabled:opacity-50 text-sm sm:text-base"
           >
             {loading ? "Sending..." : "Send Message"}
           </button>
 
           {status === "success" && (
-            <p className="text-green-600 dark:text-green-400 text-center mt-3">
+            <p className="text-green-600 dark:text-green-400 text-center mt-2 sm:mt-3">
               Message sent successfully ✅
             </p>
           )}
           {status === "error" && (
-            <p className="text-red-600 dark:text-red-400 text-center mt-3">
+            <p className="text-red-600 dark:text-red-400 text-center mt-2 sm:mt-3">
               Oops! Something went wrong. Please try again.
             </p>
           )}
@@ -133,34 +125,30 @@ export default function Contact() {
 
         {/* Right: Info / Illustration Panel */}
         <motion.div
-          className="flex-1 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-800 dark:to-gray-700 rounded-3xl p-6 sm:p-8 flex flex-col justify-start space-y-6"
+          className="flex-1 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-800 dark:to-gray-700 rounded-3xl p-4 sm:p-6 md:p-8 flex flex-col justify-start space-y-4 sm:space-y-6"
           initial="hidden"
           animate="visible"
           variants={rightPanelVariants}
         >
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Contact Info</h3>
-          <p className="text-gray-700 dark:text-gray-300">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Contact Info</h3>
+          <p className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">
             Feel free to reach out through any of the methods below:
           </p>
 
-          <div className="space-y-3 text-gray-800 dark:text-gray-200">
-            <div className="flex items-center gap-3">
+          <div className="space-y-2 sm:space-y-3 text-gray-800 dark:text-gray-200 text-sm sm:text-base">
+            <div className="flex items-center gap-2 sm:gap-3">
               <FaPhoneAlt className="text-blue-500" /> <span>+91 8008615514</span>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <FaEnvelope className="text-blue-500" /> <span>nitishkamisetti123@gmail.com</span>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <FaMapMarkerAlt className="text-blue-500" /> <span>Kakinada, Andhra Pradesh, India</span>
             </div>
           </div>
 
-          <div className="mt-6 flex justify-center lg:justify-start">
-            <img
-              src={ContactImg}
-              alt="Contact illustration"
-              className="w-full max-w-xs"
-            />
+          <div className="mt-4 sm:mt-6 flex justify-center lg:justify-start">
+            <img src={ContactImg} alt="Contact illustration" className="w-full max-w-xs sm:max-w-sm" />
           </div>
         </motion.div>
       </div>

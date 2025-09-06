@@ -25,7 +25,7 @@ const categoryOptions = [
 // ----------------------
 function ProjectsSkeleton({ count = 6 }) {
   return (
-    <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: count }).map((_, idx) => (
         <div
           key={idx}
@@ -114,11 +114,11 @@ export default function Projects() {
         </h2>
 
         {/* Controls */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8 items-center">
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="px-4 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+            className="w-full sm:w-auto px-4 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
           >
             {categoryOptions.map((cat) => (
               <option key={cat} value={cat}>
@@ -130,26 +130,26 @@ export default function Projects() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+            className="w-full sm:w-auto px-4 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200"
           >
             <option value="startDate">Sort by Start Date</option>
             <option value="endDate">Sort by End Date</option>
           </select>
 
-          <div className="relative w-full sm:w-auto">
+          <div className="relative w-full sm:w-64">
             <input
               type="text"
               placeholder="Search projects..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full sm:w-64 px-4 py-2 pl-10 border rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500"
+              className="w-full px-4 py-2 pl-10 border rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500"
             />
             <FaSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" />
           </div>
         </div>
 
         {/* Projects Grid */}
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.slice(0, visibleCount).map((project, idx) => (
             <motion.div
               key={project._id}
@@ -157,10 +157,10 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: idx * 0.1 }}
-              className="relative flex flex-col p-6 rounded-3xl shadow-xl bg-gradient-to-tr from-white/80 dark:from-gray-800/80 via-white/50 dark:via-gray-700/50 to-white/70 dark:to-gray-600/70 backdrop-blur-md hover:scale-105 hover:shadow-2xl transition-transform duration-300"
+              className="relative flex flex-col p-4 sm:p-6 rounded-3xl shadow-xl bg-gradient-to-tr from-white/80 dark:from-gray-800/80 via-white/50 dark:via-gray-700/50 to-white/70 dark:to-gray-600/70 backdrop-blur-md hover:scale-105 hover:shadow-2xl transition-transform duration-300"
             >
               {project.thumbnail && (
-                <div className="w-full h-48 flex items-center justify-center overflow-hidden rounded-xl mb-4 bg-gray-200 dark:bg-gray-700">
+                <div className="w-full h-48 sm:h-56 flex items-center justify-center overflow-hidden rounded-xl mb-4 bg-gray-200 dark:bg-gray-700">
                   <img
                     src={project.thumbnail}
                     alt={project.title || "Project thumbnail"}
@@ -169,18 +169,21 @@ export default function Projects() {
                   />
                 </div>
               )}
+
               {project.title && (
-                <h3 className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   {project.title}
                 </h3>
               )}
+
               {project.description && (
-                <p className="text-gray-700 dark:text-gray-300 flex-1 mb-3">
+                <p className="text-gray-700 dark:text-gray-300 flex-1 text-sm sm:text-base mb-3">
                   {project.description}
                 </p>
               )}
+
               {project.techStack && (
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
                   {(Array.isArray(project.techStack)
                     ? project.techStack
                     : project.techStack.split(",")
@@ -190,17 +193,16 @@ export default function Projects() {
                     .map((tech, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 text-sm rounded-full bg-gradient-to-r from-sriBlue-400 to-sriTeal-400 text-gray-900 dark:text-white shadow-md hover:shadow-lg transition"
+                        className="px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full bg-gradient-to-r from-sriBlue-400 to-sriTeal-400 text-gray-900 dark:text-white shadow-sm hover:shadow-md transition"
                       >
                         {tech}
                       </span>
                     ))}
                 </div>
               )}
-              {(project.liveUrl ||
-                project.githubUrl ||
-                project.caseStudyUrl) && (
-                <div className="mt-auto flex flex-wrap gap-4 text-indigo-600 dark:text-indigo-400 font-medium">
+
+              {(project.liveUrl || project.githubUrl || project.caseStudyUrl) && (
+                <div className="mt-auto flex flex-wrap gap-3 text-indigo-600 dark:text-indigo-400 font-medium text-sm sm:text-base">
                   {project.liveUrl && (
                     <a
                       href={project.liveUrl}

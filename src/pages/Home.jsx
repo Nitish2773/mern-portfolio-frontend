@@ -14,28 +14,28 @@ const Certifications = lazy(() => import("./Certifications"));
 const Contact = lazy(() => import("./Contact"));
 
 // ----------------------
-// Profile Skeleton
+// Profile Skeleton (Mobile-Friendly)
 // ----------------------
 function ProfileSkeleton() {
   return (
-    <section className="relative flex flex-col md:flex-row items-center justify-between gap-8 px-6 md:px-12 py-12 md:py-16">
+    <section className="relative flex flex-col md:flex-row items-center justify-between gap-6 px-4 sm:px-6 md:px-12 py-8 md:py-12">
       <div className="flex-1 space-y-4">
-        <div className="h-8 w-3/4 bg-gray-300 rounded animate-pulse"></div>
-        <div className="h-6 w-full bg-gray-300 rounded animate-pulse"></div>
-        <div className="flex gap-4 mt-4">
-          <div className="h-10 w-32 bg-gray-300 rounded animate-pulse"></div>
-          <div className="h-10 w-32 bg-gray-300 rounded animate-pulse"></div>
+        <div className="h-6 w-3/4 bg-gray-300 rounded animate-pulse"></div>
+        <div className="h-5 w-full bg-gray-300 rounded animate-pulse"></div>
+        <div className="flex flex-col sm:flex-row gap-3 mt-4">
+          <div className="h-10 w-full sm:w-32 bg-gray-300 rounded animate-pulse"></div>
+          <div className="h-10 w-full sm:w-32 bg-gray-300 rounded animate-pulse"></div>
         </div>
       </div>
       <div className="flex-1 flex justify-center mt-6 md:mt-0">
-        <div className="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gray-300 animate-pulse"></div>
+        <div className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full bg-gray-300 animate-pulse"></div>
       </div>
     </section>
   );
 }
 
 // ----------------------
-// Main Component
+// Home Component
 // ----------------------
 export default function Home() {
   const { loading } = useLoading();
@@ -71,7 +71,7 @@ export default function Home() {
     },
   };
 
-  // Show global loader or profile skeleton
+  // Show loader or skeleton
   if (loading) {
     return (
       <motion.div
@@ -89,45 +89,46 @@ export default function Home() {
 
   return (
     <div className="flex flex-col relative bg-gradient-to-b from-sriBlue-50 via-white to-sriTeal-50 dark:from-sriBlue-950 dark:via-gray-900 dark:to-sriTeal-900">
+      
       {/* Hero Section */}
       <motion.section
         variants={itemVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
-        className="relative flex flex-col md:flex-row items-center justify-between gap-8 px-6 md:px-12 py-12 md:py-16 overflow-hidden"
+        className="relative flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 px-4 sm:px-6 md:px-12 py-8 sm:py-12 md:py-16 overflow-hidden"
       >
         {/* Left - Text */}
-        <div className="flex-1 mt-0">
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
+        <div className="flex-1 mt-0 text-center md:text-left">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-3 sm:mb-4 leading-snug sm:leading-tight">
             Hi, I am{" "}
             <span className="text-sriBlue-500 dark:text-sriBlue-400">
               {hero.name || "Sri Nitish"}
             </span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-6">
+          <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-4 sm:mb-6">
             {hero.caption ||
               "Full-Stack Developer 🚀 | Data Engineer 📊 | Problem Solver 💡"}
           </p>
-          <div className="flex gap-4 mt-2 flex-wrap">
+          <div className="flex flex-col sm:flex-row gap-3 mt-3 sm:mt-4 justify-center md:justify-start">
             <a
               href="#projects"
-              className="px-6 py-2 bg-sriBlue-500 text-white rounded-lg shadow-md hover:bg-sriBlue-600 transition"
+              className="w-full sm:w-auto px-6 py-2 bg-sriBlue-500 text-white rounded-lg shadow-md hover:bg-sriBlue-600 transition text-center"
             >
               View Projects
             </a>
             <a
               href="#contact"
-              className="px-6 py-2 border border-sriBlue-500 text-sriBlue-500 rounded-lg hover:bg-sriBlue-50 dark:hover:bg-sriBlue-800 transition"
+              className="w-full sm:w-auto px-6 py-2 border border-sriBlue-500 text-sriBlue-500 rounded-lg hover:bg-sriBlue-50 dark:hover:bg-sriBlue-800 transition text-center"
             >
               Contact Me
             </a>
           </div>
         </div>
 
-        {/* Right - Profile */}
+        {/* Right - Profile Image */}
         <div className="flex-1 flex justify-center mt-6 md:mt-0">
-          <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full hero-glow float-y shadow-xl border-4 border-sriBlue-200 dark:border-sriBlue-700 overflow-hidden">
+          <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full hero-glow float-y shadow-xl border-4 border-sriBlue-200 dark:border-sriBlue-700 overflow-hidden">
             <img
               src={hero.profileImage || "/assets/profile.jpg"}
               alt={hero.name || "Profile"}
@@ -157,7 +158,7 @@ export default function Home() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="px-6 md:px-12 py-8 md:py-12"
+            className="px-4 sm:px-6 md:px-12 py-6 sm:py-8 md:py-12"
           >
             {section.component}
           </motion.section>
