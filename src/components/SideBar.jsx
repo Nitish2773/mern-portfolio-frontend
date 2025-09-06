@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  FaGithub,
-  FaLinkedin,
-  FaTwitter,
-  FaEnvelope,
-  FaFacebookF,
-  FaTelegramPlane,
-  FaPlus,
-} from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaFacebookF, FaTelegramPlane, FaPlus } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Sidebar() {
@@ -54,19 +46,19 @@ export default function Sidebar() {
       </aside>
 
       {/* Mobile Sidebar */}
-      <aside className="flex md:hidden fixed bottom-6 right-6 z-50 flex-col items-end gap-2">
+      <aside className="flex md:hidden fixed bottom-24 left-4 z-50 flex-col items-start gap-2">
         {/* Floating shutter button */}
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-4 rounded-full bg-sriBlue-500 text-white shadow-lg hover:bg-sriBlue-600 transition"
+          className="p-3 rounded-full bg-sriBlue-500 text-white shadow-lg hover:bg-sriBlue-600 transition"
           animate={{ rotate: isOpen ? 45 : 0 }}
           whileHover={{ scale: 1.1 }}
           transition={{ rotate: { type: "spring", stiffness: 200, damping: 20 } }}
         >
-          <FaPlus size={22} />
+          <FaPlus size={18} />
         </motion.button>
 
-        {/* Overlay + Sliding Panel */}
+        {/* Vertical sliding panel */}
         <AnimatePresence>
           {isOpen && (
             <>
@@ -80,14 +72,14 @@ export default function Sidebar() {
                 onClick={() => setIsOpen(false)}
               />
 
-              {/* Bottom sliding panel */}
+              {/* Vertical icons panel */}
               <motion.div
                 key="panel"
-                initial={{ y: 100, opacity: 0 }}
+                initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 100, opacity: 0 }}
+                exit={{ y: 50, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 200, damping: 25 }}
-                className="fixed bottom-0 right-0 left-0 mx-4 mb-4 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-xl flex justify-around z-50"
+                className="fixed bottom-20 left-4 flex flex-col gap-3 bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-xl z-50"
               >
                 {icons.map((item, idx) => {
                   const Icon = item.icon;
@@ -97,13 +89,13 @@ export default function Sidebar() {
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center w-14 h-14 rounded-full bg-sriBlue-500 text-white hover:bg-sriBlue-600 shadow-md transition"
+                      className="flex items-center justify-center w-10 h-10 rounded-full bg-sriBlue-500 text-white hover:bg-sriBlue-600 shadow-md transition"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 20 }}
                       transition={{ delay: idx * 0.05, type: "spring", stiffness: 200, damping: 20 }}
                     >
-                      <Icon size={22} />
+                      <Icon size={16} />
                     </motion.a>
                   );
                 })}
