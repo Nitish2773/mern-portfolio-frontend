@@ -35,7 +35,7 @@ export default function Navbar() {
           <motion.div
             className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center
                        bg-gradient-to-br from-sriBlue-500 to-sriBlue-700
-                       dark:from-sriBlue-400 dark:to-sriTeal-400
+                       dark:from-sriBlue-500 dark:to-sriTeal-400
                        text-white font-extrabold text-lg shadow-md"
             animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
@@ -44,10 +44,10 @@ export default function Navbar() {
           </motion.div>
           <div className="hidden sm:flex flex-col">
             <div className="text-lg sm:text-xl font-bold tracking-wide bg-clip-text text-transparent 
-                            bg-gradient-to-r from-sriBlue-600 to-sriTeal-500 dark:from-sriBlue-300 dark:to-sriTeal-300">
+                            bg-gradient-to-r from-sriBlue-600 to-sriTeal-500 dark:from-sriBlue-500 dark:to-sriTeal-300 font-display">
               SRI NITISH
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-gray-500 dark:text-gray-200">
               Aspiring IT Specialist & Data Engineer
             </div>
           </div>
@@ -60,10 +60,10 @@ export default function Navbar() {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `relative font-medium text-sm sm:text-base transition-colors duration-300 ${
+                `relative font-medium text-sm sm:text-base transition-colors duration-300 px-2 py-1 rounded-md ${
                   isActive
                     ? "text-sriBlue-600 dark:text-white"
-                    : "text-gray-700 dark:text-white hover:text-sriBlue-600 dark:hover:text-sriTeal-400"
+                    : "text-gray-700 dark:text-gray-300 hover:text-sriBlue-600 dark:hover:text-sriTeal-400 hover:bg-gray-100 dark:hover:bg-gray-800/50"
                 }`
               }
             >
@@ -116,7 +116,7 @@ export default function Navbar() {
                       `block px-4 py-3 rounded-lg text-base sm:text-lg font-medium transition-colors duration-300 ${
                         isActive
                           ? "bg-sriBlue-600 text-white dark:bg-sriBlue-700"
-                          : "text-gray-700 dark:text-white hover:bg-sriBlue-100 dark:hover:bg-sriBlue-800/40"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-sriBlue-700/50 dark:hover:text-white"
                       }`
                     }
                     onClick={() => setIsOpen(false)}

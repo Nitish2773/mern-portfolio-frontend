@@ -1,18 +1,15 @@
-// App.jsx
-import React, { Suspense, lazy } from "react";
-import { Routes, Route, useNavigationType, useLocation } from "react-router-dom";
+import React, { Suspense, lazy, useState, useEffect } from "react";
+import { Routes, Route, useLocation, useNavigationType } from "react-router-dom";
 
-import ScrollToTop from "./components/ScrollToTop";
 import Loader from "./components/Loader";
+import ScrollToTop from "./components/ScrollToTop";
 import MainLayout from "./layouts/MainLayout";
-import { AuthProvider } from "./Context/AuthContext";
 import { ThemeProvider } from "./Context/ThemeContext";
-import { LoadingProvider, useLoading } from "./Context/LoadingContext";
+import { AuthProvider } from "./Context/AuthContext";
+import { LoadingProvider } from "./Context/LoadingContext";
 import PrivateRoute from "./components/PrivateRoute";
 
-// ------------------------
 // Lazy-loaded pages
-// ------------------------
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const Projects = lazy(() => import("./pages/Projects"));
@@ -23,73 +20,85 @@ const Certifications = lazy(() => import("./pages/Certifications"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-// Admin
+// Admin pages
 const AdminDashboard = lazy(() => import("./admin/AdminDashboard"));
 const AdminLogin = lazy(() => import("./admin/Login"));
 
-// ------------------------
-// Route wrapper to handle loader
-// ------------------------
-function AppRoutes() {
-  const { loading, setLoading } = useLoading();
+export default function App() {
   const location = useLocation();
   const navType = useNavigationType();
 
-  // Optional: show loader only on route change if needed
-  React.useEffect(() => {
-    setLoading(true);
-    const timer = setTimeout(() => setLoading(false), 200); // short delay for smoother experience
+  const [showLoader, setShowLoader] = useState(true);
+  const [minTimeElapsed, setMinTimeElapsed] = useState(false);
+  const [contentLoaded, setContentLoaded] = useState(false);
+
+  // Minimum display time
+  useEffect(() => {
+    const timer = setTimeout(() => setMinTimeElapsed(true), 800);
     return () => clearTimeout(timer);
-  }, [location, navType, setLoading]);
+  }, []);
 
-  return (
-    <>
-      <ScrollToTop />
-      {loading && <Loader />} {/* shows during route change */}
+  // Show loader on route change
+  useEffect(() => {
+    setShowLoader(true);
+    setContentLoaded(false);
+  }, [location, navType]);
 
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="projects" element={<Projects />} />
-            <Route path="skills" element={<Skills />} />
-            <Route path="experience" element={<Experience />} />
-            <Route path="education" element={<Education />} />
-            <Route path="certifications" element={<Certifications />} />
-            <Route path="contact" element={<Contact />} />
-          </Route>
+  // Hide loader when both minTimeElapsed & contentLoaded are true
+  useEffect(() => {
+    if (minTimeElapsed && contentLoaded) {
+      setShowLoader(false);
+    }
+  }, [minTimeElapsed, contentLoaded]);
 
-          {/* Admin routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route
-            path="/admin/dashboard"
-            element={
-              <PrivateRoute>
-                <AdminDashboard />
-              </PrivateRoute>
-            }
-          />
-
-          {/* Fallback */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-    </>
-  );
-}
-
-// ------------------------
-// Root app
-// ------------------------
-export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
         <LoadingProvider>
-          <AppRoutes />
+          <ScrollToTop />
+          {showLoader && <Loader />}
+
+          {/* Suspense fallback is null because we handle loader globally */}
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path="/" element={<MainLayout />}>
+                <Route index element={<PageWrapper Component={Home} setLoaded={setContentLoaded} />} />
+                <Route path="about" element={<PageWrapper Component={About} setLoaded={setContentLoaded} />} />
+                <Route path="projects" element={<PageWrapper Component={Projects} setLoaded={setContentLoaded} />} />
+                <Route path="skills" element={<PageWrapper Component={Skills} setLoaded={setContentLoaded} />} />
+                <Route path="experience" element={<PageWrapper Component={Experience} setLoaded={setContentLoaded} />} />
+                <Route path="education" element={<PageWrapper Component={Education} setLoaded={setContentLoaded} />} />
+                <Route path="certifications" element={<PageWrapper Component={Certifications} setLoaded={setContentLoaded} />} />
+                <Route path="contact" element={<PageWrapper Component={Contact} setLoaded={setContentLoaded} />} />
+              </Route>
+
+              {/* Admin */}
+              <Route path="/admin/login" element={<PageWrapper Component={AdminLogin} setLoaded={setContentLoaded} />} />
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <PrivateRoute>
+                    <PageWrapper Component={AdminDashboard} setLoaded={setContentLoaded} />
+                  </PrivateRoute>
+                }
+              />
+
+              <Route path="*" element={<PageWrapper Component={NotFound} setLoaded={setContentLoaded} />} />
+            </Routes>
+          </Suspense>
         </LoadingProvider>
       </AuthProvider>
     </ThemeProvider>
   );
+}
+
+// ------------------------
+// Wrapper component to signal content is mounted
+// ------------------------
+function PageWrapper({ Component, setLoaded }) {
+  useEffect(() => {
+    setLoaded(true);
+  }, [setLoaded]);
+
+  return <Component />;
 }
