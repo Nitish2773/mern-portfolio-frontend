@@ -15,10 +15,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
           
           {/* Branding */}
-          <div className="font-extrabold text-lg text-center sm:text-left 
-                          bg-clip-text text-transparent 
-                          bg-gradient-to-r from-sriBlue-400 to-sriTeal-400
-                          dark:from-sriBlue-300 dark:to-sriTeal-300">
+          <div className="font-extrabold text-lg text-center sm:text-left text-black dark:text-white">
             Sri Nitish
           </div>
 
