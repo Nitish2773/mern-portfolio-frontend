@@ -1,10 +1,9 @@
 // src/App.jsx
-import React, { Suspense, lazy } from "react";
-import { Routes, Route } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import React, { Suspense, lazy, useState, useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 import Loader from "./components/Loader";
-import LoaderWrapper from "./components/LoaderWrapper";
 import ScrollToTop from "./components/ScrollToTop";
 import MainLayout from "./layouts/MainLayout";
 import { ThemeProvider } from "./Context/ThemeContext";
@@ -27,6 +26,50 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const AdminDashboard = lazy(() => import("./admin/AdminDashboard"));
 const AdminLogin = lazy(() => import("./admin/Login"));
 
+// ----------------------
+// LoaderWrapper component
+// ----------------------
+function LoaderWrapper({ children }) {
+  const location = useLocation();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Always show loader on route change
+    setLoading(true);
+
+    // Minimum delay to show loader
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 600); // adjust time for fade effect
+
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
+  return (
+    <>
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            key="loader"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Loader />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Main content */}
+      <div style={{ display: loading ? "none" : "block" }}>{children}</div>
+    </>
+  );
+}
+
+// ----------------------
+// App Component
+// ----------------------
 export default function App() {
   return (
     <ThemeProvider>
@@ -34,96 +77,38 @@ export default function App() {
         <LoadingProvider>
           <ScrollToTop />
 
-          {/* Global Suspense for lazy-loading */}
-          <Suspense fallback={<Loader />}>
-            <AnimatePresence>
-              <Routes>
-                <Route path="/" element={<MainLayout />}>
-                  {/* Home with LoaderWrapper */}
+          <LoaderWrapper>
+            <Suspense fallback={null}>
+              <AnimatePresence mode="wait">
+                <Routes>
+                  <Route path="/" element={<MainLayout />}>
+                    <Route index element={<Home />} />
+                    <Route path="about" element={<About />} />
+                    <Route path="projects" element={<Projects />} />
+                    <Route path="skills" element={<Skills />} />
+                    <Route path="experience" element={<Experience />} />
+                    <Route path="education" element={<Education />} />
+                    <Route path="certifications" element={<Certifications />} />
+                    <Route path="contact" element={<Contact />} />
+                  </Route>
+
+                  {/* Admin */}
+                  <Route path="/admin/login" element={<AdminLogin />} />
                   <Route
-                    index
+                    path="/admin/dashboard"
                     element={
-                      <LoaderWrapper>
-                        <Home />
-                      </LoaderWrapper>
+                      <PrivateRoute>
+                        <AdminDashboard />
+                      </PrivateRoute>
                     }
                   />
 
-                  {/* Other pages */}
-                  <Route
-                    path="about"
-                    element={
-                      <LoaderWrapper>
-                        <About />
-                      </LoaderWrapper>
-                    }
-                  />
-                  <Route
-                    path="projects"
-                    element={
-                      <LoaderWrapper>
-                        <Projects />
-                      </LoaderWrapper>
-                    }
-                  />
-                  <Route
-                    path="skills"
-                    element={
-                      <LoaderWrapper>
-                        <Skills />
-                      </LoaderWrapper>
-                    }
-                  />
-                  <Route
-                    path="experience"
-                    element={
-                      <LoaderWrapper>
-                        <Experience />
-                      </LoaderWrapper>
-                    }
-                  />
-                  <Route
-                    path="education"
-                    element={
-                      <LoaderWrapper>
-                        <Education />
-                      </LoaderWrapper>
-                    }
-                  />
-                  <Route
-                    path="certifications"
-                    element={
-                      <LoaderWrapper>
-                        <Certifications />
-                      </LoaderWrapper>
-                    }
-                  />
-                  <Route
-                    path="contact"
-                    element={
-                      <LoaderWrapper>
-                        <Contact />
-                      </LoaderWrapper>
-                    }
-                  />
-                </Route>
-
-                {/* Admin */}
-                <Route path="/admin/login" element={<AdminLogin />} />
-                <Route
-                  path="/admin/dashboard"
-                  element={
-                    <PrivateRoute>
-                      <AdminDashboard />
-                    </PrivateRoute>
-                  }
-                />
-
-                {/* Fallback */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </AnimatePresence>
-          </Suspense>
+                  {/* Fallback */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AnimatePresence>
+            </Suspense>
+          </LoaderWrapper>
         </LoadingProvider>
       </AuthProvider>
     </ThemeProvider>
