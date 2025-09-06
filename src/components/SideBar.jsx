@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaFacebookF, FaTelegramPlane, FaPlus } from "react-icons/fa";
+import {
+  FaGithub,
+  FaLinkedin,
+  FaTwitter,
+  FaEnvelope,
+  FaFacebookF,
+  FaTelegramPlane,
+  FaPlus,
+} from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Sidebar() {
@@ -9,7 +17,7 @@ export default function Sidebar() {
     { name: "github", icon: FaGithub, url: "https://github.com/Nitish2773" },
     { name: "linkedin", icon: FaLinkedin, url: "https://www.linkedin.com/in/sri-nitish-kamisetti/" },
     { name: "twitter", icon: FaTwitter, url: "https://twitter.com/srinitish27" },
-    { name: "facebook", icon: FaFacebookF, url: "https://www.facebook.com/nitish.k.530435?mibextid=ZbWKwL" },
+    { name: "facebook", icon: FaFacebookF, url: "https://www.facebook.com/nitish.k.530435" },
     { name: "telegram", icon: FaTelegramPlane, url: "https://t.me/Srinitish" },
     { name: "email", icon: FaEnvelope, url: "mailto:nitishkamisetti123@gmail.com" },
   ];
@@ -26,7 +34,7 @@ export default function Sidebar() {
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-full bg-sriBlue-500 text-white hover:bg-sriBlue-600 shadow-lg"
+              className="p-2.5 rounded-full bg-sriBlue-500 text-white dark:bg-sriBlue-700 hover:bg-sriBlue-600 dark:hover:bg-sriBlue-600 shadow-lg transition"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: idx * 0.1, type: "spring", stiffness: 120 }}
@@ -50,7 +58,7 @@ export default function Sidebar() {
         {/* Floating shutter button */}
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-3 rounded-full bg-sriBlue-500 text-white shadow-lg hover:bg-sriBlue-600 transition"
+          className="p-3 rounded-full bg-sriBlue-500 dark:bg-sriBlue-700 text-white shadow-lg hover:bg-sriBlue-600 dark:hover:bg-sriBlue-600 transition"
           animate={{ rotate: isOpen ? 45 : 0 }}
           whileHover={{ scale: 1.1 }}
           transition={{ rotate: { type: "spring", stiffness: 200, damping: 20 } }}
@@ -89,7 +97,7 @@ export default function Sidebar() {
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center w-10 h-10 rounded-full bg-sriBlue-500 text-white hover:bg-sriBlue-600 shadow-md transition"
+                      className="flex items-center justify-center w-10 h-10 rounded-full bg-sriBlue-500 dark:bg-sriBlue-700 text-white hover:bg-sriBlue-600 dark:hover:bg-sriBlue-600 shadow-md transition"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 20 }}

@@ -18,7 +18,6 @@ const navItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Framer Motion variants for mobile links
   const mobileLinkVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i) => ({
@@ -34,14 +33,18 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <motion.div
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-sriBlue-500 to-sriBlue-700 text-white font-extrabold text-lg shadow-md"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center 
+              bg-gradient-to-br from-sriBlue-500 to-sriBlue-700 dark:from-sriBlue-600 dark:to-sriTeal-500 
+              text-white font-extrabold text-lg shadow-md"
             animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
             SN
           </motion.div>
           <div className="hidden sm:flex flex-col">
-            <div className="text-lg sm:text-xl font-bold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-sriBlue-600 to-sriTeal-500">
+            <div className="text-lg sm:text-xl font-bold tracking-wide bg-clip-text text-transparent 
+              bg-gradient-to-r from-sriBlue-600 to-sriTeal-500 dark:from-sriTeal-400 dark:to-sriBlue-500"
+            >
               SRI NITISH
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -66,7 +69,7 @@ export default function Navbar() {
             >
               {item.label}
               <motion.span
-                className="absolute left-0 -bottom-1 h-[2px] w-full rounded-full bg-gradient-to-r from-sriBlue-600 to-sriTeal-500 scale-x-0 origin-left"
+                className="absolute left-0 -bottom-1 h-[2px] w-full rounded-full bg-gradient-to-r from-sriBlue-600 to-sriTeal-500 dark:from-sriTeal-400 dark:to-sriBlue-500 scale-x-0 origin-left"
                 whileHover={{ scaleX: 1 }}
                 transition={{ type: "spring", stiffness: 120 }}
               />

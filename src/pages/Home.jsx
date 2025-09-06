@@ -14,21 +14,21 @@ const Certifications = lazy(() => import("./Certifications"));
 const Contact = lazy(() => import("./Contact"));
 
 // ----------------------
-// Profile Skeleton (Mobile-Friendly)
+// Profile Skeleton (Light & Dark)
 // ----------------------
 function ProfileSkeleton() {
   return (
     <section className="relative flex flex-col md:flex-row items-center justify-between gap-6 px-4 sm:px-6 md:px-12 py-8 md:py-12">
       <div className="flex-1 space-y-4">
-        <div className="h-6 w-3/4 bg-gray-300 rounded animate-pulse"></div>
-        <div className="h-5 w-full bg-gray-300 rounded animate-pulse"></div>
+        <div className="h-6 w-3/4 rounded animate-pulse bg-gray-300 dark:bg-gray-700/70"></div>
+        <div className="h-5 w-full rounded animate-pulse bg-gray-300 dark:bg-gray-700/70"></div>
         <div className="flex flex-col sm:flex-row gap-3 mt-4">
-          <div className="h-10 w-full sm:w-32 bg-gray-300 rounded animate-pulse"></div>
-          <div className="h-10 w-full sm:w-32 bg-gray-300 rounded animate-pulse"></div>
+          <div className="h-10 w-full sm:w-32 rounded animate-pulse bg-gray-300 dark:bg-gray-700/70"></div>
+          <div className="h-10 w-full sm:w-32 rounded animate-pulse bg-gray-300 dark:bg-gray-700/70"></div>
         </div>
       </div>
       <div className="flex-1 flex justify-center mt-6 md:mt-0">
-        <div className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full bg-gray-300 animate-pulse"></div>
+        <div className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full animate-pulse bg-gray-300 dark:bg-gray-700/70"></div>
       </div>
     </section>
   );
@@ -64,14 +64,10 @@ export default function Home() {
   // Motion variants
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
   };
 
-  // Show loader or skeleton
+  // Show global loader
   if (loading) {
     return (
       <motion.div
@@ -85,6 +81,7 @@ export default function Home() {
     );
   }
 
+  // Show skeleton while profile data is fetching
   if (profileLoading) return <ProfileSkeleton />;
 
   return (
@@ -106,8 +103,7 @@ export default function Home() {
             </span>
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-4 sm:mb-6">
-            {hero.caption ||
-              "Full-Stack Developer 🚀 | Data Engineer 📊 | Problem Solver 💡"}
+            {hero.caption || "Full-Stack Developer 🚀 | Data Engineer 📊 | Problem Solver 💡"}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-3 sm:mt-4 justify-center md:justify-start">
             <button
@@ -167,7 +163,7 @@ export default function Home() {
   );
 }
 
-// Add this helper function in Home.jsx
+// Helper: Smooth scroll to section
 const scrollToSection = (id) => {
   const element = document.getElementById(id);
   if (element) {

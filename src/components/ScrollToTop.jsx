@@ -23,7 +23,7 @@ export default function ScrollToTop() {
   if (config && !config?.ui?.showScrollToTop) return null;
 
   const isMobile = windowWidth < 768;
-  const bottomOffset = isMobile ? "bottom-36" : "bottom-24"; // Push mobile button higher
+  const bottomOffset = isMobile ? "bottom-36" : "bottom-24";
   const sizeClass = isMobile ? "w-10 h-10 md:w-14 md:h-14" : "w-14 h-14";
 
   return (
@@ -33,17 +33,20 @@ export default function ScrollToTop() {
       className={`
         fixed right-6 md:right-8 z-50
         ${sizeClass}
-        bg-gradient-to-tr from-purple-500 via-pink-500 to-orange-400
+        bg-gradient-to-tr 
+          from-sriBlue-500 to-sriTeal-500 
+          dark:from-sriBlue-700 dark:to-sriTeal-700
         rounded-full shadow-xl flex items-center justify-center
-        text-white ring-4 ring-purple-300/30 backdrop-blur-sm
+        text-white ring-4 ring-sriBlue-300/30 dark:ring-sriBlue-600/40
+        backdrop-blur-sm
         transform transition-all duration-300 ease-out
         hover:scale-110 hover:rotate-6 hover:shadow-2xl
         active:scale-105 active:rotate-0
-        ${visible ? `${bottomOffset} opacity-100` : '-bottom-20 opacity-0'}
+        ${visible ? `${bottomOffset} opacity-100` : "-bottom-20 opacity-0"}
       `}
     >
       <FaArrowUp
-        className={`text-xl ${isMobile ? "text-lg" : "md:text-2xl"} animate-bounce`}
+        className={`animate-bounce ${isMobile ? "text-lg" : "md:text-2xl"}`}
       />
     </button>
   );

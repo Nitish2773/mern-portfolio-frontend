@@ -1,3 +1,4 @@
+// frontend/src/pages/About.jsx
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -37,10 +38,9 @@ function AboutSkeleton() {
         <div className="h-4 w-1/3 bg-gray-300 rounded"></div>
         <div className="h-4 w-2/3 bg-gray-300 rounded"></div>
         <div className="flex gap-4 mt-4">
-          <div className="w-10 h-10 rounded-full bg-gray-400"></div>
-          <div className="w-10 h-10 rounded-full bg-gray-400"></div>
-          <div className="w-10 h-10 rounded-full bg-gray-400"></div>
-          <div className="w-10 h-10 rounded-full bg-gray-400"></div>
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="w-10 h-10 rounded-full bg-gray-400 dark:bg-gray-700"></div>
+          ))}
         </div>
       </div>
     </section>
@@ -48,7 +48,7 @@ function AboutSkeleton() {
 }
 
 // ----------------------
-// Main Component
+// About Component
 // ----------------------
 export default function About() {
   const [profile, setProfile] = useState(null);
@@ -73,19 +73,26 @@ export default function About() {
   const { about, social, hero } = profile;
   const shortBio = about.bio?.slice(0, 180);
 
+  // Motion variants
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
   return (
     <motion.section
       className="flex flex-col md:flex-row items-center gap-8 px-4 sm:px-6 md:px-12 py-8 sm:py-12 md:py-20"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      variants={itemVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
     >
       {/* Left Column */}
       <motion.div
+        className="flex-1 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 text-center md:text-left"
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
-        className="flex-1 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 text-center md:text-left"
       >
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-sriBlue-600 dark:text-sriTeal-300">
           {about.headline || "About Me"}
@@ -107,20 +114,17 @@ export default function About() {
         <div className="space-y-2 text-gray-600 dark:text-gray-300 text-sm sm:text-base">
           {about.location && (
             <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 transition">
-              <FaMapMarkerAlt className="text-sriBlue-500" />
-              {about.location}
+              <FaMapMarkerAlt className="text-sriBlue-500" /> {about.location}
             </div>
           )}
           {about.email && (
             <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 transition">
-              <FaEnvelope className="text-sriBlue-500" />
-              {about.email}
+              <FaEnvelope className="text-sriBlue-500" /> {about.email}
             </div>
           )}
           {about.phone && (
             <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 transition">
-              <FaPhone className="text-sriBlue-500" />
-              {about.phone}
+              <FaPhone className="text-sriBlue-500" /> {about.phone}
             </div>
           )}
         </div>
@@ -147,10 +151,10 @@ export default function About() {
 
       {/* Right Column - Image & Social */}
       <motion.div
+        className="flex-1 flex flex-col items-center gap-4 mt-6 md:mt-0"
         initial={{ opacity: 0, x: 30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="flex-1 flex flex-col items-center gap-4 mt-6 md:mt-0"
       >
         <motion.div
           animate={{ y: [0, -15, 0] }}
@@ -158,10 +162,11 @@ export default function About() {
           className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-xl border-2 border-sriBlue-300 dark:border-sriBlue-700 overflow-hidden bg-gradient-to-br from-sriBlue-100 to-sriTeal-50 dark:from-sriBlue-900 dark:to-sriTeal-900"
         >
           <img
-            src="/assets/data-engineer.jpg" // <-- use public folder path
-            alt="Data Engineer"
+            src="/assets/data-engineer.jpg"
+            alt={hero?.name || "Profile"}
             className="w-full h-full object-cover"
             loading="lazy"
+            decoding="async"
           />
         </motion.div>
 
@@ -182,7 +187,8 @@ export default function About() {
               href={social.github}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-sriBlue-500 transform hover:scale-125"
+              aria-label="GitHub Profile"
+              className="hover:text-sriBlue-500 transform hover:scale-125 transition"
             >
               <FaGithub />
             </a>
@@ -192,7 +198,8 @@ export default function About() {
               href={social.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-sriBlue-500 transform hover:scale-125"
+              aria-label="LinkedIn Profile"
+              className="hover:text-sriBlue-500 transform hover:scale-125 transition"
             >
               <FaLinkedin />
             </a>
@@ -202,7 +209,8 @@ export default function About() {
               href={social.twitter}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-sriBlue-500 transform hover:scale-125"
+              aria-label="Twitter Profile"
+              className="hover:text-sriBlue-500 transform hover:scale-125 transition"
             >
               <FaTwitter />
             </a>
@@ -212,7 +220,8 @@ export default function About() {
               href={social.telegram}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-sriBlue-500 transform hover:scale-125"
+              aria-label="Telegram Profile"
+              className="hover:text-sriBlue-500 transform hover:scale-125 transition"
             >
               <FaTelegram />
             </a>
@@ -222,7 +231,8 @@ export default function About() {
               href={social.facebook}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-sriBlue-500 transform hover:scale-125"
+              aria-label="Facebook Profile"
+              className="hover:text-sriBlue-500 transform hover:scale-125 transition"
             >
               <FaFacebook />
             </a>
