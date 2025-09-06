@@ -1,9 +1,8 @@
-// frontend/src/pages/Skills.jsx
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 
-// Brand-aligned categories
+// Frontend tabs: label for UI, key for API (lowercase, no spaces)
 const categories = [
   { key: "all", label: "All" },
   { key: "programming", label: "Programming" },
@@ -29,6 +28,7 @@ function SkillsSkeleton({ count = 12 }) {
   );
 }
 
+// Main Skills component
 export default function Skills() {
   const [skills, setSkills] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
@@ -40,7 +40,9 @@ export default function Skills() {
       try {
         setLoading(true);
         let url = `${process.env.REACT_APP_API_BASE}/api/skills?sortBy=${sortBy}&order=desc`;
-        if (activeCategory !== "all") url += `&category=${encodeURIComponent(activeCategory)}`;
+        if (activeCategory !== "all") {
+          url += `&category=${encodeURIComponent(activeCategory)}`;
+        }
         const res = await axios.get(url);
         setSkills(res.data || []);
       } catch (err) {
@@ -74,8 +76,8 @@ export default function Skills() {
               onClick={() => setActiveCategory(cat.key)}
               className={`px-3 sm:px-5 py-1.5 sm:py-2 rounded-full font-medium text-sm sm:text-base transition-all duration-300 ${
                 activeCategory === cat.key
-                  ? "bg-sriBlue-500 dark:bg-sriTeal-500 text-white shadow-md scale-105"
-                  : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover:bg-sriBlue-100 dark:hover:bg-sriTeal-600"
+                  ? "bg-indigo-600 text-white shadow-md scale-105"
+                  : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-indigo-600"
               }`}
             >
               {cat.label}
@@ -83,7 +85,7 @@ export default function Skills() {
           ))}
         </div>
 
-        {/* Skills */}
+        {/* Skill Badges */}
         {loading ? (
           <SkillsSkeleton />
         ) : skills.length === 0 ? (
@@ -96,18 +98,21 @@ export default function Skills() {
               <motion.div
                 key={skill._id}
                 className="flex items-center justify-center p-3 sm:p-4 rounded-full cursor-pointer
-                  bg-gradient-to-tr from-sriBlue-500 via-sriTeal-500 to-sriBlue-600
-                  dark:from-sriTeal-600 dark:via-sriBlue-700 dark:to-sriTeal-700
+                  bg-gradient-to-tr from-gray-200 via-gray-300 to-gray-200
+                  dark:from-gray-700 dark:via-gray-800 dark:to-gray-700
                   shadow-sm dark:shadow-md"
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: idx * 0.05, type: "spring", stiffness: 200 }}
+                transition={{
+                  delay: idx * 0.05,
+                  type: "spring",
+                  stiffness: 200,
+                }}
                 whileHover={{
                   scale: 1.15,
                   boxShadow:
-                    "0 6px 15px rgba(37,99,235,0.2), 0 6px 25px rgba(14,165,164,0.25)",
+                    "0 6px 15px rgba(99,102,241,0.2), 0 6px 25px rgba(139,92,246,0.25)",
                 }}
-                aria-label={skill.name}
               >
                 {skill.logo && (
                   <motion.img

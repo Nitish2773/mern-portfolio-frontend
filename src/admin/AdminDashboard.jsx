@@ -1,3 +1,4 @@
+// AdminDashboard.jsx
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../Context/AuthContext";
 import { useLoading } from "../Context/LoadingContext";
@@ -11,14 +12,15 @@ import ExperienceForm from "./ExperienceForm";
 import CertificationForm from "./CertificationForm";
 import ProfileForm from "./ProfileForm";
 
-// ✅ Only pass relative endpoints
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 const sections = [
-  { key: "projects", label: "Projects", endpoint: "/api/projects", FormComponent: ProjectForm },
-  { key: "skills", label: "Skills", endpoint: "/api/skills", FormComponent: SkillForm },
-  { key: "education", label: "Education", endpoint: "/api/education", FormComponent: EducationForm },
-  { key: "experience", label: "Experience", endpoint: "/api/experience", FormComponent: ExperienceForm },
-  { key: "certifications", label: "Certifications", endpoint: "/api/certifications", FormComponent: CertificationForm },
-  { key: "profile", label: "Profile", endpoint: "/api/profile", single: true, FormComponent: ProfileForm },
+  { key: "projects", label: "Projects", endpoint: `${API_BASE}/api/projects`, FormComponent: ProjectForm },
+  { key: "skills", label: "Skills", endpoint: `${API_BASE}/api/skills`, FormComponent: SkillForm },
+  { key: "education", label: "Education", endpoint: `${API_BASE}/api/education`, FormComponent: EducationForm },
+  { key: "experience", label: "Experience", endpoint: `${API_BASE}/api/experience`, FormComponent: ExperienceForm },
+  { key: "certifications", label: "Certifications", endpoint: `${API_BASE}/api/certifications`, FormComponent: CertificationForm },
+  { key: "profile", label: "Profile", endpoint: `${API_BASE}/api/profile`, single: true, FormComponent: ProfileForm },
 ];
 
 export default function AdminDashboard() {
@@ -84,7 +86,7 @@ export default function AdminDashboard() {
                 className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition-transform duration-300"
               >
                 <CrudManager
-                  endpoint={s.endpoint} // only relative path
+                  endpoint={s.endpoint}
                   headers={s.headers}
                   readOnly={s.readOnly}
                   single={s.single}

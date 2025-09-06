@@ -1,27 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 export default function ProfileForm({ data = {}, onSave, onCancel }) {
-  // Flattened default form for CRUD compatibility
-  // eslint-disable-next-line no-unused-vars
-  const defaultForm = {
-    hero_name: "",
-    hero_caption: "",
-    hero_description: "",
-    hero_profileImage: "",
-    about_headline: "",
-    about_bio: "",
-    about_location: "",
-    about_email: "",
-    about_phone: "",
-    about_resumeUrl: "",
-    about_availability: "Open to opportunities",
-    social_github: "",
-    social_linkedin: "",
-    social_twitter: "",
-    social_telegram: "",
-    social_facebook: "",
-  };
-
   // Flatten incoming data for editing
   const flattenData = (incoming) => ({
     hero_name: incoming.hero?.name || "",
@@ -45,9 +24,7 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
   const [form, setForm] = useState(flattenData(data));
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    setForm(flattenData(data));
-  }, [data]);
+  useEffect(() => setForm(flattenData(data)), [data]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,8 +33,6 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Rehydrate nested structure for backend
     const nestedData = {
       hero: {
         name: form.hero_name,
@@ -82,7 +57,6 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
         facebook: form.social_facebook,
       },
     };
-
     try {
       await onSave(nestedData);
       setSuccess(true);
@@ -95,16 +69,12 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
   const getDirectImageUrl = (url) => {
     if (!url) return "";
     const match = url.match(/\/d\/([a-zA-Z0-9_-]+)\//);
-    if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-    return url;
+    return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
   };
 
-  // Reusable Input Component
   const InputField = ({ label, name, required = false, type = "text" }) => (
     <div className="flex flex-col">
-      <label className="font-medium">
-        {label} {required && "*"}
-      </label>
+      <label className="font-medium">{label} {required && "*"}</label>
       <input
         type={type}
         name={name}
@@ -118,9 +88,7 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
 
   const TextAreaField = ({ label, name, rows = 3, required = false }) => (
     <div className="flex flex-col">
-      <label className="font-medium">
-        {label} {required && "*"}
-      </label>
+      <label className="font-medium">{label} {required && "*"}</label>
       <textarea
         name={name}
         value={form[name] || ""}
@@ -139,21 +107,18 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
     >
       {/* Success Toast */}
       {success && (
-        <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow z-50 animate-slide-in">
+        <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow z-50 transition-transform transform">
           Profile saved successfully!
         </div>
       )}
 
       {/* Hero Section */}
-      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-2">
-        Hero Section
-      </h3>
+      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-2">Hero Section</h3>
       <InputField label="Name" name="hero_name" required />
       <InputField label="Caption" name="hero_caption" required />
       <TextAreaField label="Description" name="hero_description" required />
       <InputField label="Profile Image URL" name="hero_profileImage" required />
 
-      {/* Live Image Preview */}
       {form.hero_profileImage && (
         <div className="col-span-1 md:col-span-2 flex justify-center mt-2">
           <img
@@ -165,9 +130,7 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
       )}
 
       {/* About Section */}
-      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-6">
-        About Section
-      </h3>
+      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-6">About Section</h3>
       <InputField label="Headline" name="about_headline" />
       <TextAreaField label="Bio" name="about_bio" required />
       <InputField label="Location" name="about_location" />
@@ -177,9 +140,7 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
       <InputField label="Availability" name="about_availability" />
 
       {/* Social Section */}
-      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-6">
-        Social Links
-      </h3>
+      <h3 className="col-span-1 md:col-span-2 font-bold text-lg mt-6">Social Links</h3>
       {[
         "social_github",
         "social_linkedin",
@@ -189,12 +150,12 @@ export default function ProfileForm({ data = {}, onSave, onCancel }) {
       ].map((key) => (
         <InputField
           key={key}
-          label={key.replace("social_", "").charAt(0).toUpperCase() + key.slice(7)}
+          label={key.replace("social_", "").replace(/^\w/, (c) => c.toUpperCase())}
           name={key}
         />
       ))}
 
-      {/* Form Buttons */}
+      {/* Buttons */}
       <div className="col-span-1 md:col-span-2 flex justify-end gap-2 mt-4">
         <button
           type="button"

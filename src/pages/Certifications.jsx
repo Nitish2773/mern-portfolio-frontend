@@ -96,7 +96,7 @@ export default function Certification() {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="border rounded px-3 py-2 text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            className="border rounded px-3 py-2 text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200"
           >
             {categories.map((cat) => (
               <option key={cat} value={cat}>{cat}</option>
@@ -125,13 +125,13 @@ export default function Certification() {
                     className="w-full h-full object-contain"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center transition duration-300 group-hover:bg-sriBlue-700/30 dark:group-hover:bg-sriTeal-800/40">
+                  <div className="absolute inset-0 flex items-center justify-center transition duration-300 group-hover:bg-black/20">
                     <div className="opacity-0 group-hover:opacity-100 transition duration-300 bg-white/30 dark:bg-gray-900/40 backdrop-blur-sm px-3 py-2 rounded text-center max-w-[90%]">
                       <h3 className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white">{cert.title}</h3>
                       <p className="text-xs sm:text-sm text-gray-800 dark:text-gray-200 mt-1">
                         {cert.provider}
                         {cert.category && (
-                          <span className="ml-1 text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-sriBlue-600/80 text-white">
+                          <span className="ml-1 text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-indigo-600/80 text-white">
                             {cert.category}
                           </span>
                         )}
@@ -149,7 +149,7 @@ export default function Certification() {
                       href={cert.verifyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-3 bg-gradient-to-r from-sriBlue-500 to-sriTeal-500 text-white font-semibold rounded-full shadow-lg hover:from-sriTeal-500 hover:to-sriBlue-500 transition-transform transform hover:-translate-y-1 hover:scale-105 text-sm sm:text-base"
+                      className="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-full shadow-lg hover:from-purple-500 hover:to-indigo-500 transition-transform transform hover:-translate-y-1 hover:scale-105 text-sm sm:text-base"
                     >
                       Verify Certificate <FaArrowRight />
                     </a>
@@ -165,7 +165,7 @@ export default function Certification() {
           <div className="text-center mt-8 sm:mt-10">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="px-5 sm:px-6 py-2 sm:py-3 text-sriBlue-600 dark:text-sriTeal-400 border border-sriBlue-400 dark:border-sriTeal-600 rounded-full font-semibold hover:bg-sriBlue-50 dark:hover:bg-sriTeal-800 transition text-sm sm:text-base"
+              className="px-5 sm:px-6 py-2 sm:py-3 text-indigo-600 dark:text-indigo-400 border border-indigo-400 dark:border-indigo-600 rounded-full font-semibold hover:bg-indigo-50 dark:hover:bg-indigo-800 transition text-sm sm:text-base"
             >
               {showAll ? "View Less" : "View More"}
             </button>
