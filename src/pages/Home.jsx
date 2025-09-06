@@ -1,5 +1,5 @@
 // frontend/src/pages/Home.jsx
-import React, { useEffect, useState, Suspense, lazy } from "react";
+import React, { useEffect, useState, Suspense, lazy, useRef } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useLoading } from "../Context/LoadingContext";
@@ -14,7 +14,7 @@ const Certifications = lazy(() => import("./Certifications"));
 const Contact = lazy(() => import("./Contact"));
 
 // ----------------------
-// Profile Skeleton (Mobile-Friendly)
+// Profile Skeleton
 // ----------------------
 function ProfileSkeleton() {
   return (
@@ -42,6 +42,31 @@ export default function Home() {
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(true);
 
+  // Refs for smooth scrolling
+  const aboutRef = useRef(null);
+  const projectsRef = useRef(null);
+  const skillsRef = useRef(null);
+  const educationRef = useRef(null);
+  const experienceRef = useRef(null);
+  const certificationsRef = useRef(null);
+  const contactRef = useRef(null);
+
+  // eslint-disable-next-line no-unused-vars
+  const sectionRefs = {
+    about: aboutRef,
+    projects: projectsRef,
+    skills: skillsRef,
+    education: educationRef,
+    experience: experienceRef,
+    certifications: certificationsRef,
+    contact: contactRef,
+  };
+
+  // Scroll function
+  const scrollToSection = (ref) => {
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   // Fetch profile data
   useEffect(() => {
     const fetchProfile = async () => {
@@ -61,17 +86,11 @@ export default function Home() {
 
   const hero = profile?.hero || {};
 
-  // Motion variants
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
   };
 
-  // Show loader or skeleton
   if (loading) {
     return (
       <motion.div
@@ -98,7 +117,6 @@ export default function Home() {
         viewport={{ once: true, amount: 0.3 }}
         className="relative flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 px-4 sm:px-6 md:px-12 py-8 sm:py-12 md:py-16 overflow-hidden"
       >
-        {/* Left - Text */}
         <div className="flex-1 mt-0 text-center md:text-left">
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-3 sm:mb-4 leading-snug sm:leading-tight">
             Hi, I am{" "}
@@ -107,26 +125,24 @@ export default function Home() {
             </span>
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-4 sm:mb-6">
-            {hero.caption ||
-              "Full-Stack Developer 🚀 | Data Engineer 📊 | Problem Solver 💡"}
+            {hero.caption || "Full-Stack Developer 🚀 | Data Engineer 📊 | Problem Solver 💡"}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-3 sm:mt-4 justify-center md:justify-start">
-            <a
-              href="#projects"
+            <button
+              onClick={() => scrollToSection(projectsRef)}
               className="w-full sm:w-auto px-6 py-2 bg-sriBlue-500 text-white rounded-lg shadow-md hover:bg-sriBlue-600 transition text-center"
             >
               View Projects
-            </a>
-            <a
-              href="#contact"
+            </button>
+            <button
+              onClick={() => scrollToSection(contactRef)}
               className="w-full sm:w-auto px-6 py-2 border border-sriBlue-500 text-sriBlue-500 rounded-lg hover:bg-sriBlue-50 dark:hover:bg-sriBlue-800 transition text-center"
             >
               Contact Me
-            </a>
+            </button>
           </div>
         </div>
 
-        {/* Right - Profile Image */}
         <div className="flex-1 flex justify-center mt-6 md:mt-0">
           <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full hero-glow float-y shadow-xl border-4 border-sriBlue-200 dark:border-sriBlue-700 overflow-hidden">
             <img
@@ -140,29 +156,23 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Other Sections */}
+      {/* Sections */}
       <Suspense fallback={<ProfileSkeleton />}>
-        {[
-          { id: "about", component: <About /> },
-          { id: "projects", component: <Projects /> },
-          { id: "skills", component: <Skills /> },
-          { id: "education", component: <Education /> },
-          { id: "experience", component: <Experience /> },
-          { id: "certifications", component: <Certifications /> },
-          { id: "contact", component: <Contact /> },
-        ].map((section) => (
-          <motion.section
-            key={section.id}
-            id={section.id}
-            variants={itemVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="px-4 sm:px-6 md:px-12 py-6 sm:py-8 md:py-12"
-          >
-            {section.component}
-          </motion.section>
-        ))}
+        <motion.div
+          variants={itemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="flex flex-col gap-12"
+        >
+          <div ref={aboutRef}><About /></div>
+          <div ref={projectsRef}><Projects /></div>
+          <div ref={skillsRef}><Skills /></div>
+          <div ref={educationRef}><Education /></div>
+          <div ref={experienceRef}><Experience /></div>
+          <div ref={certificationsRef}><Certifications /></div>
+          <div ref={contactRef}><Contact /></div>
+        </motion.div>
       </Suspense>
     </div>
   );
