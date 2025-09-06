@@ -12,6 +12,7 @@ import {
   FaTelegram,
   FaFacebook,
 } from "react-icons/fa";
+import DataEngineerImg from '../assets/data-engineer.jpg'
 
 // ----------------------
 // Skeleton Loader
@@ -158,7 +159,7 @@ export default function About() {
           className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-xl border-2 border-sriBlue-300 dark:border-sriBlue-700 overflow-hidden bg-gradient-to-br from-sriBlue-100 to-sriTeal-50 dark:from-sriBlue-900 dark:to-sriTeal-900"
         >
           <img
-            src="/assets/data-engineer.jpg" // <-- use public folder path
+            src={DataEngineerImg} // <-- use public folder path
             alt="Data Engineer"
             className="w-full h-full object-cover"
             loading="lazy"
