@@ -12,7 +12,7 @@ const Certifications = lazy(() => import("./Certifications"));
 const Contact = lazy(() => import("./Contact"));
 
 // ----------------------
-// Profile Skeleton (Mobile-Friendly)
+// Hero Skeleton (Profile)
 // ----------------------
 function ProfileSkeleton() {
   return (
@@ -61,14 +61,10 @@ export default function Home() {
   // Motion variants
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
   };
 
-  // Show skeleton while fetching profile
+  // Show skeleton while hero/profile is loading
   if (profileLoading) return <ProfileSkeleton />;
 
   return (
@@ -124,29 +120,15 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Other Sections */}
-      <Suspense fallback={<ProfileSkeleton />}>
-        {[
-          { id: "about", component: <About /> },
-          { id: "projects", component: <Projects /> },
-          { id: "skills", component: <Skills /> },
-          { id: "education", component: <Education /> },
-          { id: "experience", component: <Experience /> },
-          { id: "certifications", component: <Certifications /> },
-          { id: "contact", component: <Contact /> },
-        ].map((section) => (
-          <motion.section
-            key={section.id}
-            id={section.id}
-            variants={itemVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="px-4 sm:px-6 md:px-12 py-6 sm:py-8 md:py-12"
-          >
-            {section.component}
-          </motion.section>
-        ))}
+      {/* Sections - Each handles its own skeleton internally */}
+      <Suspense fallback={null}>
+        <About />
+        <Projects />
+        <Skills />
+        <Education />
+        <Experience />
+        <Certifications />
+        <Contact />
       </Suspense>
     </div>
   );

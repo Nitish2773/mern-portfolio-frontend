@@ -74,6 +74,7 @@ export default function Certification() {
     setShowAll(false);
   }, [selectedCategory, certs]);
 
+  // Show skeleton while loading
   if (loading) return <CertificationSkeleton />;
 
   if (error)
