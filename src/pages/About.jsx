@@ -84,14 +84,16 @@ export default function About() {
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
-        className="flex-1 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 text-center md:text-left bg-white dark:bg-gray-900"
+        className="flex-1 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 
+                   text-center md:text-left bg-white dark:bg-gray-900"
       >
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-sriBlue-600 dark:text-sriTeal-300">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4
+                       text-gray-900 dark:text-sriTeal-300">
           {about.headline || "About Me"}
         </h2>
 
         {/* Collapsible Bio */}
-        <p className="text-sm sm:text-base md:text-lg text-gray-800 dark:text-gray-200 leading-relaxed mb-4">
+        <p className="text-gray-800 dark:text-gray-200 text-sm sm:text-base md:text-lg leading-relaxed mb-4">
           {expanded ? about.bio : `${shortBio}...`}
           {about.bio?.length > 180 && (
             <button
@@ -106,19 +108,22 @@ export default function About() {
         {/* Contact Info */}
         <div className="space-y-2 text-gray-800 dark:text-gray-200 text-sm sm:text-base">
           {about.location && (
-            <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
+            <div className="flex items-center justify-center md:justify-start gap-2
+                            hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
               <FaMapMarkerAlt className="text-sriBlue-500 dark:text-sriTeal-400" />
               {about.location}
             </div>
           )}
           {about.email && (
-            <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
+            <div className="flex items-center justify-center md:justify-start gap-2
+                            hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
               <FaEnvelope className="text-sriBlue-500 dark:text-sriTeal-400" />
               {about.email}
             </div>
           )}
           {about.phone && (
-            <div className="flex items-center justify-center md:justify-start gap-2 hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
+            <div className="flex items-center justify-center md:justify-start gap-2
+                            hover:text-sriBlue-500 dark:hover:text-sriTeal-400 transition">
               <FaPhone className="text-sriBlue-500 dark:text-sriTeal-400" />
               {about.phone}
             </div>
@@ -132,13 +137,16 @@ export default function About() {
               href={about.resumeUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 bg-sriBlue-500 dark:bg-sriTeal-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-sriBlue-600 dark:hover:bg-sriTeal-600 transition text-sm sm:text-base justify-center"
+              className="flex items-center gap-2 bg-sriBlue-500 dark:bg-sriTeal-500 text-white
+                         px-5 py-2 rounded-lg shadow-md hover:bg-sriBlue-600 dark:hover:bg-sriTeal-600
+                         transition text-sm sm:text-base justify-center"
             >
               <FaFileDownload /> Resume
             </a>
           )}
           {about.availability && (
-            <span className="px-4 py-2 rounded-lg border border-sriBlue-500 dark:border-sriTeal-500 text-sriBlue-500 dark:text-sriTeal-500 font-medium text-sm sm:text-base">
+            <span className="px-4 py-2 rounded-lg border border-sriBlue-500 dark:border-sriTeal-500
+                             text-sriBlue-500 dark:text-sriTeal-500 font-medium text-sm sm:text-base">
               {about.availability}
             </span>
           )}
@@ -155,7 +163,10 @@ export default function About() {
         <motion.div
           animate={{ y: [0, -15, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-xl border-2 border-sriBlue-300 dark:border-sriTeal-500 overflow-hidden bg-gradient-to-br from-sriBlue-100 to-sriTeal-50 dark:from-sriBlue-900 dark:to-sriTeal-900"
+          className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-xl border-2
+                     border-sriBlue-300 dark:border-sriTeal-500 overflow-hidden
+                     bg-gradient-to-br from-sriBlue-100 to-sriTeal-50
+                     dark:from-sriBlue-900 dark:to-sriTeal-900"
         >
           <img
             src={DataEngineerImg}
@@ -165,13 +176,14 @@ export default function About() {
           />
         </motion.div>
 
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-100 dark:text-gray-100 text-center">
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold 
+                       text-gray-900 dark:text-gray-100 text-center">
           {hero?.name || "Sri Nitish"}
         </h3>
-        <p className="text-gray-200 dark:text-gray-200 font-medium text-sm sm:text-base md:text-lg text-center">
+        <p className="text-gray-700 dark:text-gray-200 font-medium text-sm sm:text-base md:text-lg text-center">
           {hero?.caption || "Full-Stack Developer | Data Engineer"}
         </p>
-        <p className="text-gray-300 dark:text-gray-300 text-sm sm:text-base max-w-xs sm:max-w-sm text-center">
+        <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base max-w-xs sm:max-w-sm text-center">
           {hero?.description}
         </p>
 
