@@ -30,7 +30,7 @@ export default function Loader() {
       transition={{ duration: 1.5 }} // increased fade-out duration
     >
       <motion.div
-        className="flex space-x-1 text-3xl md:text-4xl font-extrabold text-sriBlue-600 dark:text-sriTeal tracking-wider font-display"
+        className="flex space-x-1 text-3xl md:text-4xl font-extrabold text-sriBlue-600 dark:text-sriBlue-600 tracking-wider font-display"
         variants={container}
         initial="hidden"
         animate="visible"
@@ -40,7 +40,7 @@ export default function Loader() {
             <span className="relative z-10">{char}</span>
             {/* Glow effect */}
             <motion.span
-              className="absolute left-0 top-0 w-full h-full rounded-md bg-sriBlue-300 dark:bg-sriTeal opacity-20 blur-md"
+              className="absolute left-0 top-0 w-full h-full rounded-md bg-sriBlue-300 dark:bg-sriBlue-600 opacity-20 blur-md"
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 0.25, 0] }}
               transition={{

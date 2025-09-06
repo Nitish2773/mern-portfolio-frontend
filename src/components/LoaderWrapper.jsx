@@ -1,43 +1,50 @@
-// src/components/LoaderWrapper.jsx
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Loader from "./Loader";
-import { useLocation, useNavigationType } from "react-router-dom";
 
-export default function LoaderWrapper({ children }) {
-  const location = useLocation();
-  const navType = useNavigationType();
+/**
+ * LoaderWrapper ensures the global loader always animates, 
+ * even if the page is fast-loading.
+ * 
+ * Props:
+ * - loading: boolean (true when page is loading)
+ * - minTime: minimum time in ms the loader stays visible (default 500ms)
+ */
+export default function LoaderWrapper({ loading, minTime = 800 }) {
+  const [showLoader, setShowLoader] = useState(loading);
+  const [timerDone, setTimerDone] = useState(false);
 
-  const [showLoader, setShowLoader] = useState(true);
-  const [minTimeElapsed, setMinTimeElapsed] = useState(false);
-  const [contentLoaded, setContentLoaded] = useState(false);
-
-  // Minimum loader display time (1s)
   useEffect(() => {
-    const timer = setTimeout(() => setMinTimeElapsed(true), 1000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (loading) {
+      setShowLoader(true);
+      setTimerDone(false);
 
-  // Show loader on route change
-  useEffect(() => {
-    setShowLoader(true);
-    setContentLoaded(false);
-    setMinTimeElapsed(false);
+      const timer = setTimeout(() => {
+        setTimerDone(true);
+      }, minTime);
 
-    const timer = setTimeout(() => setMinTimeElapsed(true), 1000);
-    return () => clearTimeout(timer);
-  }, [location.pathname, navType]);
-
-  // Hide loader when both minTimeElapsed & contentLoaded are true
-  useEffect(() => {
-    if (minTimeElapsed && contentLoaded) {
+      return () => clearTimeout(timer);
+    } else {
+      // wait for minimum time before hiding
+      if (!timerDone) return;
       setShowLoader(false);
     }
-  }, [minTimeElapsed, contentLoaded]);
+  }, [loading, minTime, timerDone]);
 
   return (
-    <>
-      {showLoader && <Loader />}
-      {React.cloneElement(children, { setContentLoaded })}
-    </>
+    <AnimatePresence mode="wait">
+      {showLoader && (
+        <motion.div
+          key="global-loader"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="fixed inset-0 z-[9999]"
+        >
+          <Loader />
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

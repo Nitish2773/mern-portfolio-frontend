@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { Suspense, lazy, useState, useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import Loader from "./components/Loader";
@@ -27,23 +27,16 @@ const AdminDashboard = lazy(() => import("./admin/AdminDashboard"));
 const AdminLogin = lazy(() => import("./admin/Login"));
 
 // ----------------------
-// LoaderWrapper component
+// LoaderWrapper for initial app load
 // ----------------------
 function LoaderWrapper({ children }) {
-  const location = useLocation();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Always show loader on route change
-    setLoading(true);
-
-    // Minimum delay to show loader
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 600); // adjust time for fade effect
-
+    // Show global loader on initial app mount
+    const timer = setTimeout(() => setLoading(false), 1200); // adjust for fade/glow
     return () => clearTimeout(timer);
-  }, [location.pathname]);
+  }, []);
 
   return (
     <>
@@ -61,14 +54,13 @@ function LoaderWrapper({ children }) {
         )}
       </AnimatePresence>
 
-      {/* Main content */}
       <div style={{ display: loading ? "none" : "block" }}>{children}</div>
     </>
   );
 }
 
 // ----------------------
-// App Component
+// Main App Component
 // ----------------------
 export default function App() {
   return (
