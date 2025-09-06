@@ -3,24 +3,19 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { FaGraduationCap, FaCalendarAlt } from "react-icons/fa";
 
-// Skeleton loader for Education
+// Skeleton loader for Education (mobile-first)
 function EducationSkeleton({ count = 3 }) {
   return (
     <div className="relative">
-      <div className="absolute left-4 sm:left-1/2 transform sm:-translate-x-1/2 w-1 h-full bg-indigo-200 dark:bg-indigo-700 rounded-full"></div>
-      {Array.from({ length: count }).map((_, idx) => {
-        const isLeft = idx % 2 === 0;
-        return (
-          <div
-            key={idx}
-            className={`mb-16 flex w-full ${
-              isLeft ? "sm:justify-start" : "sm:justify-end"
-            } justify-start animate-pulse`}
-          >
-            <div className="relative w-full sm:w-[calc(50%-1rem)] bg-gray-200 dark:bg-gray-700 rounded-xl h-40"></div>
-          </div>
-        );
-      })}
+      <div className="absolute left-6 w-1 h-full bg-indigo-200 dark:bg-indigo-700 rounded-full"></div>
+      {Array.from({ length: count }).map((_, idx) => (
+        <div
+          key={idx}
+          className="mb-12 flex w-full justify-start animate-pulse"
+        >
+          <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-xl h-36 p-4 ml-10"></div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -64,7 +59,7 @@ export default function Education() {
         ) : (
           <div className="relative">
             {/* timeline line */}
-            <div className="absolute left-4 sm:left-1/2 transform sm:-translate-x-1/2 w-1 h-full bg-indigo-200 dark:bg-indigo-700 rounded-full"></div>
+            <div className="absolute left-6 sm:left-1/2 transform sm:-translate-x-1/2 w-1 h-full bg-indigo-200 dark:bg-indigo-700 rounded-full"></div>
 
             {education.map((edu, idx) => {
               const isLeft = idx % 2 === 0;
@@ -75,21 +70,22 @@ export default function Education() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  className={`mb-16 flex w-full ${
-                    isLeft ? "sm:justify-start" : "sm:justify-end"
-                  } justify-start`}
+                  className={`mb-12 flex w-full justify-start sm:justify-${
+                    isLeft ? "start" : "end"
+                  }`}
                 >
                   <div
-                    className={`relative w-full sm:w-[calc(50%-1rem)] bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 hover:scale-[1.02] transition-transform`}
+                    className={`relative w-full sm:w-[calc(50%-1rem)] bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 hover:scale-[1.02] transition-transform ml-10 sm:ml-0`}
                   >
                     {/* marker */}
                     <span
-                      className={`absolute top-6 sm:top-8 w-6 h-6 rounded-full bg-indigo-600 dark:bg-indigo-400 border-4 border-white dark:border-gray-900 
-                      ${isLeft ? "-left-9 sm:-right-3" : "-left-9 sm:-left-3"}`}
+                      className={`absolute -left-6 sm:top-8 sm:${
+                        isLeft ? "-right-3" : "-left-3"
+                      } top-6 w-6 h-6 rounded-full bg-indigo-600 dark:bg-indigo-400 border-4 border-white dark:border-gray-900`}
                     ></span>
 
                     {/* logo + info */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 mb-2">
                       {edu.logo ? (
                         <img
                           src={edu.logo}
@@ -116,7 +112,7 @@ export default function Education() {
                     </div>
 
                     {/* dates */}
-                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
                       <FaCalendarAlt className="text-indigo-500" />
                       {new Date(edu.startDate).toLocaleDateString("en-US", {
                         month: "short",
@@ -133,14 +129,14 @@ export default function Education() {
 
                     {/* description */}
                     {edu.description && (
-                      <p className="mt-3 text-gray-700 dark:text-gray-300 text-sm">
+                      <p className="mt-2 text-gray-700 dark:text-gray-300 text-sm">
                         {edu.description}
                       </p>
                     )}
 
                     {/* skills */}
                     {edu.skills?.length > 0 && (
-                      <div className="mt-4 flex flex-wrap gap-2">
+                      <div className="mt-2 flex flex-wrap gap-2">
                         {edu.skills.map((skill, idx) => (
                           <span
                             key={idx}

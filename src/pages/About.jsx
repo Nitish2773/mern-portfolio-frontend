@@ -22,18 +22,25 @@ function AboutSkeleton() {
   return (
     <section className="flex flex-col md:flex-row items-center gap-8 px-4 py-8 md:py-12">
       {/* Left column */}
-      <div className="flex-1 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 space-y-4 animate-pulse">
-        <div className="h-6 w-1/3 bg-gray-400 rounded"></div>
+      <div className="w-full md:flex-1 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 space-y-4 animate-pulse">
+        <div className="h-6 w-1/2 bg-gray-400 rounded"></div>
         <div className="h-4 w-full bg-gray-300 rounded"></div>
         <div className="h-4 w-5/6 bg-gray-300 rounded"></div>
         <div className="h-6 w-1/4 bg-gray-400 rounded mt-4"></div>
+        <div className="h-4 w-2/3 bg-gray-300 rounded mt-2"></div>
       </div>
+
       {/* Right column */}
-      <div className="flex-1 flex flex-col items-center gap-6 animate-pulse">
-        <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl bg-gray-300"></div>
-        <div className="h-6 w-1/3 bg-gray-400 rounded"></div>
-        <div className="h-4 w-1/2 bg-gray-300 rounded"></div>
+      <div className="w-full md:flex-1 flex flex-col items-center gap-6 animate-pulse">
+        <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-2xl bg-gray-300"></div>
+        <div className="h-6 w-1/2 bg-gray-400 rounded"></div>
         <div className="h-4 w-2/3 bg-gray-300 rounded"></div>
+        <div className="h-4 w-3/4 bg-gray-300 rounded"></div>
+        <div className="flex gap-3 mt-4">
+          <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+          <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+          <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+        </div>
       </div>
     </section>
   );
