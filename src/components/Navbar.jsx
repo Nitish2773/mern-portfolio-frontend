@@ -18,7 +18,6 @@ const navItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Framer Motion variants for mobile links
   const mobileLinkVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i) => ({
@@ -31,17 +30,22 @@ export default function Navbar() {
   return (
     <header className="w-full sticky top-0 z-50 backdrop-blur-md bg-white/50 dark:bg-gray-900/50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+        
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <motion.div
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-sriBlue-500 to-sriBlue-700 text-white font-extrabold text-lg shadow-md"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center
+                       bg-gradient-to-br from-sriBlue-500 to-sriBlue-700
+                       dark:from-sriBlue-600 dark:to-sriBlue-800
+                       text-white font-extrabold text-lg shadow-md"
             animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
             SN
           </motion.div>
           <div className="hidden sm:flex flex-col">
-            <div className="text-lg sm:text-xl font-bold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-sriBlue-600 to-sriTeal-500">
+            <div className="text-lg sm:text-xl font-bold tracking-wide bg-clip-text text-transparent 
+                            bg-gradient-to-r from-sriBlue-600 to-sriTeal-500 dark:from-sriBlue-400 dark:to-sriTeal-400">
               SRI NITISH
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -57,7 +61,7 @@ export default function Navbar() {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `relative font-medium text-sm sm:text-base transition-all ${
+                `relative font-medium text-sm sm:text-base transition-colors duration-300 ${
                   isActive
                     ? "text-sriBlue-600 dark:text-sriTeal-400"
                     : "text-gray-700 dark:text-gray-300 hover:text-sriBlue-600 dark:hover:text-sriTeal-400"
@@ -74,11 +78,12 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Right side: Theme + Mobile Menu */}
+        {/* Theme + Mobile Menu */}
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <button
-            className="md:hidden p-2 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+            className="md:hidden p-2 rounded-md bg-gray-200 dark:bg-gray-700
+                       hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
@@ -90,7 +95,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700"
+            className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-600"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -109,10 +114,10 @@ export default function Navbar() {
                   <NavLink
                     to={item.to}
                     className={({ isActive }) =>
-                      `block px-4 py-3 rounded-lg text-base sm:text-lg font-medium transition ${
+                      `block px-4 py-3 rounded-lg text-base sm:text-lg font-medium transition-colors duration-300 ${
                         isActive
-                          ? "bg-sriBlue-600 text-white"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-sriBlue-100 dark:hover:bg-sriBlue-800/30"
+                          ? "bg-sriBlue-600 text-white dark:bg-sriBlue-700"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-sriBlue-100 dark:hover:bg-sriBlue-800/40"
                       }`
                     }
                     onClick={() => setIsOpen(false)}
